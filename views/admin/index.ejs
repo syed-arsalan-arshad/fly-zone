@@ -1,0 +1,85 @@
+<%- include('includes/header.ejs') %>
+<%- include('includes/navBar.ejs', {path: path}) %>
+<div class="container-fluid" style="padding: 0%; overflow-x: hidden;">
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-12">
+            <%- include('includes/leftSideBar.ejs', {path: sidePath}) %>
+        </div>
+        <div class="col-lg-9 col-md-8 col-sm-12 pr-lg-5 pr-md-4">
+            <div class="card text-info bg-light mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Hello Admin</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                        <div class="card-header">Seller</div>
+                        <div class="card-body">
+                          <h5 class="card-title">Total Seller</h5>
+                          <p class="card-text">Count: <%= count.allSellerCount %></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+                        <div class="card-header">Seller</div>
+                        <div class="card-body">
+                          <h5 class="card-title">Accepted Seller</h5>
+                          <p class="card-text">Count: <%= count.acceptedSellerCount %></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+                        <div class="card-header">Seller</div>
+                        <div class="card-body">
+                          <h5 class="card-title">Rejected Seller</h5>
+                          <p class="card-text">Count: <%= count.rejectedSellerCount %></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                        <div class="card-header">Seller</div>
+                        <div class="card-body">
+                          <h5 class="card-title">Requested Seller</h5>
+                          <p class="card-text">Count: <%= count.requestedSellerCount %></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+                        <div class="card-header">Users</div>
+                        <div class="card-body">
+                          <h5 class="card-title">Registered User</h5>
+                          <p class="card-text">Count: <%= count.userCount %></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                        <div class="card-header">Orders</div>
+                        <div class="card-body">
+                          <h5 class="card-title">Total Order</h5>
+                          <p class="card-text">Count: </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                        <div class="card-header">Products</div>
+                        <div class="card-body">
+                          <h5 class="card-title">Total Products</h5>
+                          <p class="card-text">Count: <%= count.productCount %></p>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('includes/footer.ejs') %>
+
+    

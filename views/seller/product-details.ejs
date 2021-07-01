@@ -1,0 +1,84 @@
+<%- include('includes/header.ejs') %>
+<%- include('includes/navBar.ejs', {path: path}) %>
+<div class="container-fluid" style="padding: 0%; overflow-x: hidden;">
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-12">
+            <%- include('includes/leftSideBar.ejs', {path: sidePath}) %>
+        </div>
+        <div class="col-lg-9 col-md-8 col-sm-12">
+            <div class="card text-info bg-light mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Product Title</h5>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-12"><h6>Category: <button class="btn btn-info">Electronics</button></h6></div>
+                        <div class="col-lg-6 col-md-6 col-12 text-lg-right text-md-right"><h6>Sub-Category: <button class="btn btn-info">Lights</button></h6></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-12">
+                            <h6>Description:</h6>
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-12">
+                            <div class="border p-1">
+                                <p>Hello</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12"><h5>Images</h5></div>
+                        <div class="col-12">
+                            <ul>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 col-12">
+                                            <h6>Main Image</h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-8 col-12">
+                                            <div class="border">
+                                                <img src="" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 col-12">
+                                            <h6>Small Front Image</h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-8 col-12">
+                                            <div class="border">
+                                                <img src="" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 col-12">
+                                            <h6>Small Back Image</h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-8 col-12">
+                                            <div class="border">
+                                                <img src="" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-12"><h6>MRP: <button class="btn btn-info">599</button></h6></div>
+                        <div class="col-lg-6 col-md-6 col-12 text-lg-right text-md-right"><h6>Sale-Price: <button class="btn btn-info">599</button></h6></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('includes/footer.ejs') %>
+
+    

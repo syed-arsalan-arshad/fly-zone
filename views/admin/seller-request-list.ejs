@@ -1,0 +1,46 @@
+<%- include('includes/header.ejs') %>
+<%- include('includes/navBar.ejs', {path: path}) %>
+<div class="container-fluid" style="padding: 0%; overflow-x: hidden;">
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-12">
+            <%- include('includes/leftSideBar.ejs', {path: sidePath}) %>
+        </div>
+        <div class="col-lg-9 col-md-8 col-12 py-2">
+            <% if(sellerData.length > 0){  %>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>Shop Name</th>
+                                <th>Seller Name</th>
+                                <th>Mobile No.</th>
+                                <!-- <th>Status</th> -->
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% i = 1;
+                            sellerData.forEach(seller => { %>
+                                <tr>
+                                    <td><%= i %></td>
+                                    <td><%= seller.shopName %></td>
+                                    <td><%= seller.name %></td>
+                                    <td><%= seller.mobile %></td>
+                                    <td><a class="btn btn-info" href="/admin/seller-details/<%= seller.id %>">View Details</a></td>
+                                </tr>
+                            <% i++; }) %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } else { %>
+                <div style="border: 1px solid blue; padding: 0.5rem;">
+                    <p>No Seller Available</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+<%- include('includes/footer.ejs') %>
+
+    

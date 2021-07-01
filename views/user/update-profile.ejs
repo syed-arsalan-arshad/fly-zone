@@ -1,0 +1,20 @@
+<div class="sign-in-popup">
+    <div class="row">
+      <div class="col-12 mb-30">
+        <h3>Update Profile</h3>
+        <form action="/update-profile" method="POST">
+          <label for="sign-in-input">Name:<abbr class="required" title="required">*</abbr></label>
+          <input type="text" name="name" value="<%= userData.name %>" id="sign-in-input">
+  
+          <label for="sign-in-password">Email:<abbr class="required" title="required">*</abbr></label>
+          <input type="text" name="email" value="<%= userData.email %>" id="sign-in-password">
+
+          <label for="Mobile">Mobile:<abbr class="required" title="required">*</abbr></label>
+          <input type="text" readonly name="mobile" id="Mobile" value="<%= userData.mobile %>">
+  
+          <input type="submit" name="sign-in" value="Update Profile" class="btn btn-md btn-dark btn-button">
+  
+        </form>
+      </div>>
+    </div>
+  </div>

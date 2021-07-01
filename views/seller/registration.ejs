@@ -1,0 +1,83 @@
+<%- include('includes/header.ejs') %>
+<%- include('includes/navBar.ejs', {path: path}) %>
+<div class="container-fluid" style="padding: 0%; overflow-x: hidden;">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Seller Registration</h3>
+                </div>
+                <div class="card-body">
+                    <% if(errorMessage){ %>
+                        <div class="error-block">
+                            <p>Error: <%= errorMessage %></p>
+                        </div>
+                    <% } %>
+                    <% if(successMessage){ %>
+                        <div class="success-block">
+                            <p><%= successMessage %></p>
+                            <a href="/seller/login">Login For Seller</a>
+                        </div>
+                    <% } %>
+                    <form action="/seller/registration" method="POST" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" value="<%= oldData.name %>" name="name" id="name" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="text" name="email" value="<%= oldData.email %>" id="email" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="mobile">Mobile</label>
+                                    <input type="text" name="mobile" value="<%= oldData.mobile %>" id="mobile" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="shopName">Shop Name</label>
+                                    <input type="text" name="shopName" value="<%= oldData.shopName %>" id="shopName" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="shopLogo">Shop Logo</label>
+                                    <input type="file" name="shopLogo" id="shopLogo" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="docs">Adhaar Card/PAN Card</label>
+                                    <input type="file" name="docs" id="docs" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-12"">
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" name="password" value="<%= oldData.password %>" id="password" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-12"">
+                                <div class="form-group">
+                                    <label for="confirm_password">Confirm Password</label>
+                                    <input type="password" name="confirm_password" value="<%= oldData.confirm_password %>" id="confirm_password" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <input type="submit" name="btnLogin" value="Register" class="btn btn-secondary">
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<%- include('includes/footer.ejs') %>
+
+    

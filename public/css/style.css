@@ -1,0 +1,18 @@
+.error-block {
+    border-radius: 5px;
+    border: 1px solid red;
+    padding: 5px;
+    color: red;
+}
+.error-block p{
+    margin: 0;
+}
+.success-block {
+    border-radius: 5px;
+    border: 1px solid green;
+    padding: 5px;
+    color: green;
+}
+.success-block p{
+    margin: 0;
+}
