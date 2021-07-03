@@ -7,7 +7,7 @@ const SessionStore = require("express-session-sequelize")(session.Store);
 const sequelize = require("./util/database");
 const bodyParser = require("body-parser");
 const { v4: uuidv4 } = require("uuid");
-const userRoutes = require("./routes/user");
+const userRoutes = require('./routes/user');
 const adminRoutes = require("./routes/admin");
 const sellerRoutes = require("./routes/seller");
 const errorController = require("./controllers/error");
@@ -18,6 +18,7 @@ const SubCategory = require("./models/sub-category");
 const Seller = require("./models/seller");
 const multer = require("multer");
 const { copyFileSync } = require("fs");
+const ProductLabel = require("./models/productLabel");
 
 const store = new SessionStore({
   db: sequelize,
@@ -103,6 +104,7 @@ Product.belongsTo(SubCategory, { constraint: true, onDelete: "CASCADE" });
 Product.belongsTo(Seller, { constraint: true, onDelete: "CASCADE" });
 SubCategory.belongsTo(Category, { constraint: true, onDelete: "CASCADE" });
 Category.hasMany(SubCategory, { constraint: true, onDelete: "CASCADE" });
+ProductLabel.belongsTo(Product, { constraint: true, onDelete: "CASCADE" })
 //Instatiate Server
 sequelize
   // .sync({ force: true })

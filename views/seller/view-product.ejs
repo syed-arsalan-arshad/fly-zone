@@ -11,7 +11,7 @@
                 <div class="col-12">
                     <% if(prods.length > 0) { %>
                         <div class="table-resonsive">
-                            <table class="table table-stripped table-hovered text-center">
+                            <table class="table table-stripped table-hovered text-center table-bordered">
                                 <thead>
                                     <th>S.No</th>
                                     <th>Product Name</th>
@@ -30,22 +30,22 @@
                                     prods.forEach(product => { %> 
                                         <td><%= i %></td>
                                         <td><%= product.title %></td>
-                                        <td><img src="/<%= product.smallFront %>" alt="" class="img-fluid" style="height: 50px;"></td>
+                                        <td><img src="/<%= product.mainImage %>" alt="" class="img-fluid" style="height: 50px;"></td>
                                         <td><%= product.category.cat_name %></td>
                                         <td><%= product.subCategory.sub_cat_name %></td>
-                                        <td><%= product.price %></td>
-                                        <td><%= product.price %></td>
-                                        <td><%= product.price %></td>
-                                        <td><a href="">Edit</a></td>
-                                        <td><a href="/seller/product-details">View</a></td>
-                                        <td><a href="">Delete</a></td>
+                                        <td><button class="btn btn-danger">&#8377;<%= product.mrp %></button></td>
+                                        <td><button class="btn btn-success">&#8377;<%= product.salePrice %></button></td>
+                                        <td><button class="btn btn-info"><%= Math.round((product.salePrice/product.mrp)*100) %>%</button></td>
+                                        <td><a href="/seller/edit-product/<%= product.id %>">Edit</a></td>
+                                        <td><a href="/seller/product-details/<%= product.id %>">View</a></td>
+                                        <td><a href="/seller/delete-product/<%= product.id %>">Delete</a></td>
 
                                     <% i++; }); %>
                                 </tbody>
                             </table>
                         </div>
                     <% } else { %>
-                        <h3>No Product <a href="/admin/add-product">Click here to add</a></h3>
+                        <h3>No Product <a href="/seller/add-product">Click here to add</a></h3>
                     <% } %>
 
                    

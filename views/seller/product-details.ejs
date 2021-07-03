@@ -8,14 +8,14 @@
         <div class="col-lg-9 col-md-8 col-sm-12">
             <div class="card text-info bg-light mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">Product Title</h5>
+                    <h5 class="card-title"><%= product.title %></h5>
                 </div>
             </div>
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-12"><h6>Category: <button class="btn btn-info">Electronics</button></h6></div>
-                        <div class="col-lg-6 col-md-6 col-12 text-lg-right text-md-right"><h6>Sub-Category: <button class="btn btn-info">Lights</button></h6></div>
+                        <div class="col-lg-6 col-md-6 col-12"><h6>Category: <button class="btn btn-info"><%= product.category.cat_name %></button></h6></div>
+                        <div class="col-lg-6 col-md-6 col-12 text-lg-right text-md-right"><h6>Sub-Category: <button class="btn btn-info"><%= product.subCategory.sub_cat_name %></button></h6></div>
                     </div>
                     <div class="row">
                         <div class="col-lg-3 col-md-3 col-12">
@@ -23,7 +23,7 @@
                         </div>
                         <div class="col-lg-9 col-md-9 col-12">
                             <div class="border p-1">
-                                <p>Hello</p>
+                                <p><%= product.description %></p>
                             </div>
                         </div>
                     </div>
@@ -37,8 +37,8 @@
                                             <h6>Main Image</h6>
                                         </div>
                                         <div class="col-lg-9 col-md-8 col-12">
-                                            <div class="border">
-                                                <img src="" alt="">
+                                            <div class="">
+                                                <a class="btn btn-info" href="/seller/see-image/<%= product.mainImage %>">See</a>
                                             </div>
                                         </div>
                                     </div>
@@ -49,8 +49,8 @@
                                             <h6>Small Front Image</h6>
                                         </div>
                                         <div class="col-lg-9 col-md-8 col-12">
-                                            <div class="border">
-                                                <img src="" alt="">
+                                            <div class="">
+                                                <a class="btn btn-info" href="/seller/see-image/<%= product.smallFront %>">See</a>
                                             </div>
                                         </div>
                                     </div>
@@ -61,8 +61,8 @@
                                             <h6>Small Back Image</h6>
                                         </div>
                                         <div class="col-lg-9 col-md-8 col-12">
-                                            <div class="border">
-                                                <img src="" alt="">
+                                            <div class="">
+                                                <a class="btn btn-info" href="/seller/see-image/<%= product.smallBack %>">See</a>
                                             </div>
                                         </div>
                                     </div>
@@ -71,8 +71,8 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-12"><h6>MRP: <button class="btn btn-info">599</button></h6></div>
-                        <div class="col-lg-6 col-md-6 col-12 text-lg-right text-md-right"><h6>Sale-Price: <button class="btn btn-info">599</button></h6></div>
+                        <div class="col-lg-6 col-md-6 col-12"><h6>MRP: <button class="btn btn-info">&#8377; <%= product.mrp %></button></h6></div>
+                        <div class="col-lg-6 col-md-6 col-12 text-lg-right text-md-right"><h6>Sale-Price: <button class="btn btn-info">&#8377; <%= product.salePrice %></button></h6></div>
                     </div>
                 </div>
             </div>

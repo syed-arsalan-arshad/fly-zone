@@ -3,10 +3,13 @@ const Category = require("../models/category");
 const Seller = require("../models/seller");
 const SubCategory = require("../models/sub-category");
 const Product = require("../models/product");
-exports.getIndex = (req, res, next) => {
+const fs = require("fs");
+exports.getIndex = async (req, res, next) => {
+  const productCount = await Product.findAndCountAll({where: {sellerId: req.session.sellerData.id}});
   res.render("seller/index", {
     path: "/",
     sidePath: "/",
+    productCount: productCount.count
   });
 };
 
@@ -201,13 +204,15 @@ exports.getAddProduct = async (req, res, next) => {
 exports.postAddProduct = async (req, res, next) => {
   const error = validationResult(req);
   const title = req.body.title;
-  const price = req.body.price;
+  const mrp = req.body.mrp;
   const description = req.body.description;
   const catId = req.body.category;
   const subcatId = req.body.subcategory;
   const mainImage = req.files[0].path;
   const smallFront = req.files[1].path;
   const smallBack = req.files[2].path;
+  const salePrice = req.body.salePrice;
+  const stock = req.body.stock;
   // console.log(imageUrl);
 
   try {
@@ -240,10 +245,12 @@ exports.postAddProduct = async (req, res, next) => {
       smallFront: smallFront,
       smallBack: smallBack,
       description: description,
-      price: price,
+      mrp: mrp,
       categoryId: category.id,
       subCategoryId: subcategory.id,
       sellerId: req.session.sellerData.id,
+      salePrice: salePrice,
+      stock: stock,
     });
     res.redirect("/seller/view-product");
   } catch (err) {
@@ -267,8 +274,139 @@ exports.getViewProduct = (req, res, next) => {
 };
 
 exports.productDetails = (req, res, next) => {
-  res.render("seller/product-details", {
-    path: "",
-    sidePath: "/view-product",
+  const proId = req.params.proId;
+  Product.findByPk(proId, { include: [Category, SubCategory] })
+    .then((product) => {
+      res.render("seller/product-details", {
+        path: "",
+        sidePath: "/view-product",
+        product: product,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+exports.seeImage = (req, res, next) => {
+  const imagePath = req.params.imagePath;
+  const path = "images/" + imagePath;
+
+  fs.readFile(path, (err, data) => {
+    if (err) {
+      console.log(err);
+    }
+    const fileName = path.split("/")[1];
+    const fileType = path.split(".")[1];
+    res.setHeader("Content-Type", "image/" + fileType);
+    res.setHeader("Content-Disposition", 'inline; filename="' + fileName + '"');
+    res.send(data);
   });
 };
+
+exports.editProduct = async (req, res, next) => {
+  const proId = req.params.proId;
+  try {
+    const cat = await Category.findAll();
+    const subcat = await SubCategory.findAll({ include: Category });
+    const product = await Product.findByPk(proId, {
+      include: [Category, SubCategory],
+    });
+    res.render("seller/edit-product", {
+      path: "",
+      sidePath: "/view-product",
+      product: product,
+      errorMessage: "",
+      cat: cat,
+      subcat: subcat,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.postEditProduct = async (req, res, next) => {
+  const errors = validationResult(req);
+  const title = req.body.title;
+  const mrp = req.body.mrp;
+  const description = req.body.description;
+  const catId = req.body.category;
+  const subcatId = req.body.subcategory;
+  const mainImage = req.files[0];
+  const smallFront = req.files[1];
+  const smallBack = req.files[2];
+  const salePrice = req.body.salePrice;
+  const stock = req.body.stock;
+  const proId = req.body.id;
+
+  try {
+    const cat = await Category.findByPk(catId);
+    const subcat = await SubCategory.findByPk(subcatId);
+    const product = await Product.findByPk(proId, {
+      include: [Category, SubCategory],
+    });
+
+    if (!errors.isEmpty()) {
+      const catNew = await Category.findAll();
+      const subcatNew = await SubCategory.findAll({ include: Category });
+      return res.render("seller/edit-product", {
+        path: "",
+        sidePath: "/view-product",
+        product: product,
+        errorMessage: "",
+        cat: catNew,
+        subcat: subcatNew,
+      });
+    }
+
+    product.title = title;
+    product.mrp = mrp;
+    product.salePrice = salePrice;
+    product.description = description;
+    product.categoryId = cat.id;
+    product.subCategoryId = subcat.id;
+    product.stock = stock;
+    if (mainImage) {
+      deleteFile(product.mainImage);
+      product.mainImage = mainImage.path;
+    }
+    if (smallFront) {
+      deleteFile(product.smallFront);
+      product.smallFront = smallFront.path;
+    }
+    if (smallBack) {
+      deleteFile(product.smallBack);
+      product.smallBack = smallBack.path;
+    }
+    const pro = await product.save();
+    console.log(pro + 'pro');
+    res.redirect('/seller/view-product');
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.deleteProduct = (req, res, next) => {
+  const proId = req.params.proId;
+  Product.findByPk(proId)
+  .then(product => {
+    deleteFile(product.mainImage);
+    deleteFile(product.smallBack);
+    deleteFile(product.smallFront);
+    return Product.destroy({where: {id: proId}});
+  })
+  .then(() => {
+    res.redirect('/seller/view-product');
+  })
+  .catch(err => {
+    console.log(err);
+  })
+};
+
+const deleteFile = (filePath) => {
+  fs.unlink(filePath, (err) => {
+      if(err){
+          console.log(err);
+      }
+  });
+}

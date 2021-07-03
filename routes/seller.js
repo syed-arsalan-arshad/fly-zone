@@ -50,12 +50,19 @@ router.post(
       .withMessage("Title is in alphanumeric order")
       .isLength({ min: 5 })
       .withMessage("Title should be of 5 character"),
-    body("price")
+    body("mrp")
       .isDecimal()
-      .withMessage("Price should be in decimal form")
+      .withMessage("MRP should be in decimal form")
       .not()
       .isEmpty()
-      .withMessage("Price should not be empty"),
+      .withMessage("MRP should not be empty"),
+    body("salePrice")
+      .isDecimal()
+      .withMessage("Sale Price should be in decimal form")
+      .not()
+      .isEmpty()
+      .withMessage("Sale Price should not be empty"),
+    body("stock").not().isEmpty().withMessage("Stock should not be empty"),
     body("description")
       .isString()
       .withMessage("Description is in alphanumeric order")
@@ -65,8 +72,53 @@ router.post(
   sellerController.postAddProduct
 );
 
-router.get('/view-product', isSellerAuth, sellerController.getViewProduct);
+router.get("/view-product", isSellerAuth, sellerController.getViewProduct);
 
-router.get('/product-details', isSellerAuth, sellerController.productDetails);
+router.get("/edit-product/:proId", isSellerAuth, sellerController.editProduct);
+
+router.post(
+  "/edit-product",
+  isSellerAuth,
+  [
+    body("title")
+      .isString()
+      .withMessage("Title is in alphanumeric order")
+      .isLength({ min: 5 })
+      .withMessage("Title should be of 5 character"),
+    body("mrp")
+      .isDecimal()
+      .withMessage("MRP should be in decimal form")
+      .not()
+      .isEmpty()
+      .withMessage("MRP should not be empty"),
+    body("salePrice")
+      .isDecimal()
+      .withMessage("Sale Price should be in decimal form")
+      .not()
+      .isEmpty()
+      .withMessage("Sale Price should not be empty"),
+    body("stock").not().isEmpty().withMessage("Stock should not be empty"),
+    body("description")
+      .isString()
+      .withMessage("Description is in alphanumeric order")
+      .isLength({ min: 10 })
+      .withMessage("Description should be of 10 character"),
+  ],
+  sellerController.postEditProduct
+);
+
+router.get('/delete-product/:proId', isSellerAuth, sellerController.deleteProduct);
+
+router.get(
+  "/product-details/:proId",
+  isSellerAuth,
+  sellerController.productDetails
+);
+
+router.get(
+  "/see-image/images/:imagePath",
+  isSellerAuth,
+  sellerController.seeImage
+);
 
 module.exports = router;
