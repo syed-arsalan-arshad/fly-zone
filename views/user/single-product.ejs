@@ -57,11 +57,16 @@
 
             <span class="product-single__price">
               <ins>
-                <span class="amount">$<%= product.price %></span>
+                <span class="amount">&#8377;<%= product.salePrice %></span>
               </ins>
               <del>
-                <span>$<%= product.price %></span>
+                <span>&#8377;<%= product.mrp %></span>
               </del>
+              &nbsp;&nbsp;
+              <ins>
+                <span style="background-color: cadetblue; padding: 2px; border-radius: 3px; color: white;">&nbsp;<%= Math.round((product.salePrice/product.mrp)*100); %>% Off</span>
+              </ins>
+
             </span>            
 
             <!-- <div class="colors clearfix">
@@ -70,45 +75,55 @@
               <a href="#" class="colors__item black"></a>
               <a href="#" class="colors__item pink"></a>
             </div> -->
-
-            <div class="size-quantity clearfix">
-              <!-- <div class="size">
-                <label>Size</label>
-                <select name="size" id="size__select" class="size__select">
-                  <option value="xs">XS</option>
-                  <option value="s">S</option>
-                  <option value="m">M</option>
-                  <option value="l">L</option>
-                  <option value="xl">XL</option>
-                </select>
-              </div> -->
-              
-              <div class="quantity">
-                <label>Quantity</label>                 
-                <select name="quantity" id="quantity__select" class="quantity__select">
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                </select>
+            <form action="">
+              <div class="">
+                <!-- <div class="size">
+                  <label>Size</label>
+                  <select name="size" id="size__select" class="size__select">
+                    <option value="xs">XS</option>
+                    <option value="s">S</option>
+                    <option value="m">M</option>
+                    <option value="l">L</option>
+                    <option value="xl">XL</option>
+                  </select>
+                </div> -->
+                
+                <div class="form-group">
+                  <label>Quantity</label>                 
+                  <select name="quantity" id="quantity__select" class="quantity__select">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                  
+                </div>
+              </div>            
+  
+              <div class="row row-10 product-single__actions clearfix">
+                <div class="col">
+                  <% if(isUserLoggedIn){ %>
+                    <a href="" class="btn btn-lg btn-color product-single__add-to-cart">
+                      <i class="ui-bag"></i>
+                      <span>Add To Cart</span>
+                    </a>
+                  <% }else { %>
+                    <a href="" class="btn btn-lg btn-color product-single__add-to-cart">
+                      <i class="ui-bag"></i>
+                      <span>Login To Purchase</span>
+                    </a>
+                  <% } %>
+                </div>
+                <!-- <div class="col">
+                  <a href="#" class="btn btn-lg btn-dark product-single__add-to-wishlist">
+                    <i class="ui-heart"></i>
+                    <span>Wishlist</span>
+                  </a>
+                </div> -->
               </div>
-            </div>            
-
-            <div class="row row-10 product-single__actions clearfix">
-              <div class="col">
-                <a href="#" class="btn btn-lg btn-color product-single__add-to-cart">
-                  <i class="ui-bag"></i>
-                  <span>Add to Cart</span>
-                </a>
-              </div>
-              <div class="col">
-                <a href="#" class="btn btn-lg btn-dark product-single__add-to-wishlist">
-                  <i class="ui-heart"></i>
-                  <span>Wishlist</span>
-                </a>
-              </div>
-            </div>            
+            </form>
+                        
 
             <!-- <div class="product_meta">
               <ul>
@@ -147,18 +162,12 @@
                   <div class="accordion__body">
                     <table class="table shop_attributes">
                       <tbody>
-                        <tr>
-                          <th>Size:</th>
-                          <td>EU 41 (US 8), EU 42 (US 9), EU 43 (US 10), EU 45 (US 12)</td>
-                        </tr>
-                        <tr>
-                          <th>Colors:</th>
-                          <td>Violet, Black, Blue</td>
-                        </tr>
-                        <tr>
-                          <th>Fabric:</th>
-                          <td>Cotton (100%)</td>
-                        </tr>                                     
+                        <% product.productLabels.forEach(label => { %>
+                          <tr>
+                            <th><%= label.label %>:</th>
+                            <td><%= label.value %></td>
+                          </tr>
+                        <% }) %>                                     
                       </tbody>
                     </table>
                   </div>

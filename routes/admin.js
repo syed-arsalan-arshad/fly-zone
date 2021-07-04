@@ -86,6 +86,8 @@ router.get('/download-logo/:sellerId', adminController.downloadLogo);
 
 router.get('/download-docs/:sellerId', adminController.downloadDocs);
 
+router.get('/login-as-seller/:sellerId', isAuth, adminController.loginAsSeller);
+
 router.get("/logout", adminController.postLogout);
 
 module.exports = router;

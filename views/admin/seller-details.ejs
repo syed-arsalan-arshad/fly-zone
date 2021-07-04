@@ -37,6 +37,11 @@
             </div>
             <div class="card card-body">
                 <div class="row">
+                    <% if(sellerData.status == 1){ %>
+                        <div class="col-4">
+                            <a class="btn btn-primary btn-block" href="/admin/login-as-seller/<%= sellerData.id %>" target="_blank">Login As Seller</a>
+                        </div>
+                    <% } %>
                     <% if(sellerData.status != 1){ %>
                         <div class="col-4">
                             <form action="/admin/seller-status-change" method="POST">

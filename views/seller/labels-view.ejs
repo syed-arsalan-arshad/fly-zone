@@ -1,0 +1,86 @@
+<%- include('includes/header.ejs') %>
+<%- include('includes/navBar.ejs', {path: path}) %>
+<div class="container-fluid" style="padding: 0%; overflow-x: hidden;">
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-12">
+            <%- include('includes/leftSideBar.ejs', {path: sidePath}) %>
+        </div>
+        <div class="col-lg-9 col-md-8 col-sm-12">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Add Labels</h3>
+                        </div>
+                        <div class="card-body">
+                            <% if(errorMessage){ %>
+                                <div class="error-block">
+                                    <p>Error: <%= errorMessage %></p>
+                                </div>
+                            <% } %>
+                            <form action="/seller/add-labels/<%= product.id %>" method="POST">
+                                <input type="hidden" value="<%= product.id %>" name="proId">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4 col-12">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold" for="label">Label</label>
+                                            <input type="text" class="form-control" name="label" placeholder="Label">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-12">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold" for="value">Value</label>
+                                            <input type="text" class="form-control" name="value" placeholder="Value">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-12">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold" for="">Action</label>
+                                            <button type="submit" class="btn btn-success btn-block">Add Label</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>View Labels</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover table-stripped">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>Label</th>
+                                            <th>Value</th>
+                                            <th>Action</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% i = 1; labels.forEach(label => { %>
+                                            <tr>
+                                                <td><%= i %></td>
+                                                <td><%= label.label %></td>
+                                                <td><%= label.value %></td>
+                                                <td><a href="">Edit</a></td>
+                                                <td><a href="">Delete</a></td>
+                                            </tr>
+                                        <% }) %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('includes/footer.ejs') %>
+
+    

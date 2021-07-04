@@ -112,15 +112,16 @@
               <div class="product__details">
                 <h3 class="product__title">
                   <a href="/product-details/<%= product.id %>"><%= product.title %></a>
+                  <span style="background-color: cadetblue; padding: 2px; border-radius: 3px; color: white;float: right;"><%= Math.round((product.salePrice/product.mrp)*100) %>% Off</span>
                 </h3>
               </div>
 
               <span class="product__price">
                 <ins>
-                  <span class="amount">&#8377;<%= product.price %></span>
+                  <span class="amount">&#8377;<%= product.salePrice %></span>
                 </ins>
                 <del>
-                  <span>&#8377;<%= product.price %></span>
+                  <span>&#8377;<%= product.mrp %></span>
                 </del>
               </span>
             </div> <!-- end product -->
@@ -131,265 +132,12 @@
     </section> <!-- end best seller -->
 
     <!-- New Arrivals -->
-    <section class="section-wrap no-padding">
-      <div class="container">
-
-        <div class="heading-row">
-          <div class="text-center">
-            <h2 class="heading bottom-line">
-              New arrivals
-            </h2>
-          </div>
-        </div>
-
-        <div class="row row-8">
-
-          <div class="col-lg-2 col-sm-4 product">
-            <div class="product__img-holder">
-              <a href="single-product.html" class="product__link" aria-label="Product">
-                <img src="user/img/shop/product_1.jpg" alt="" class="product__img">
-                <img src="user/img/shop/product_back_1.jpg" alt="" class="product__img-back">
-              </a>
-              <div class="product__actions">
-                <a href="quickview.html" class="product__quickview">
-                  <i class="ui-eye"></i>
-                  <span>Quick View</span>
-                </a>
-                <a href="#" class="product__add-to-wishlist">
-                  <i class="ui-heart"></i>
-                  <span>Wishlist</span>
-                </a>
-              </div>
-            </div>
-
-            <div class="product__details">
-              <h3 class="product__title">
-                <a href="single-product.html">Joeby Tailored Trouser</a>
-              </h3>
-            </div>
-
-            <span class="product__price">
-              <ins>
-                <span class="amount">$17.99</span>
-              </ins>
-            </span>
-          </div> <!-- end product -->
-
-          <div class="col-lg-2 col-sm-4 product">
-            <div class="product__img-holder">
-              <a href="single-product.html" class="product__link" aria-label="Product">
-                <img src="user/img/shop/product_9.jpg" alt="" class="product__img">
-                <img src="user/img/shop/product_back_9.jpg" alt="" class="product__img-back">
-              </a>
-              <div class="product__actions">
-                <a href="quickview.html" class="product__quickview">
-                  <i class="ui-eye"></i>
-                  <span>Quick View</span>
-                </a>
-                <a href="#" class="product__add-to-wishlist">
-                  <i class="ui-heart"></i>
-                  <span>Wishlist</span>
-                </a>
-              </div>
-            </div>
-
-            <div class="product__details">
-              <h3 class="product__title">
-                <a href="single-product.html">Men’s Belt</a>
-              </h3>
-            </div>
-
-            <span class="product__price">
-              <ins>
-                <span class="amount">$9.90</span>
-              </ins>
-            </span>
-          </div> <!-- end product -->
-
-          <div class="col-lg-2 col-sm-4 product">
-            <div class="product__img-holder">
-              <a href="single-product.html" class="product__link" aria-label="Product">
-                <img src="user/img/shop/product_10.jpg" alt="" class="product__img">
-                <img src="user/img/shop/product_back_10.jpg" alt="" class="product__img-back">
-              </a>
-              <div class="product__actions">
-                <a href="quickview.html" class="product__quickview">
-                  <i class="ui-eye"></i>
-                  <span>Quick View</span>
-                </a>
-                <a href="#" class="product__add-to-wishlist">
-                  <i class="ui-heart"></i>
-                  <span>Wishlist</span>
-                </a>
-              </div>
-            </div>
-
-            <div class="product__details">
-              <h3 class="product__title">
-                <a href="single-product.html">Sport Hi Adidas</a>
-              </h3>
-            </div>
-
-            <span class="product__price">
-              <ins>
-                <span class="amount">$29.00</span>
-              </ins>
-            </span>
-          </div> <!-- end product -->
-
-          <div class="col-lg-2 col-sm-4 product">
-            <div class="product__img-holder">
-              <a href="single-product.html" class="product__link" aria-label="Product">
-                <img src="user/img/shop/product_2.jpg" alt="" class="product__img">
-                <img src="user/img/shop/product_back_2.jpg" alt="" class="product__img-back">
-              </a>
-              <div class="product__actions">
-                <a href="quickview.html" class="product__quickview">
-                  <i class="ui-eye"></i>
-                  <span>Quick View</span>
-                </a>
-                <a href="#" class="product__add-to-wishlist">
-                  <i class="ui-heart"></i>
-                  <span>Wishlist</span>
-                </a>
-              </div>
-            </div>
-
-            <div class="product__details">
-              <h3 class="product__title">
-                <a href="single-product.html">Denim Hooded</a>
-              </h3>
-            </div>
-
-            <span class="product__price">
-              <ins>
-                <span class="amount">$30.00</span>
-              </ins>
-            </span>
-          </div> <!-- end product -->
-
-          <div class="col-lg-2 col-sm-4 product">
-            <div class="product__img-holder">
-              <a href="single-product.html" class="product__link" aria-label="Product">
-                <img src="user/img/shop/product_3.jpg" alt="" class="product__img">
-                <img src="user/img/shop/product_back_3.jpg" alt="" class="product__img-back">
-              </a>
-              <div class="product__actions">
-                <a href="quickview.html" class="product__quickview">
-                  <i class="ui-eye"></i>
-                  <span>Quick View</span>
-                </a>
-                <a href="#" class="product__add-to-wishlist">
-                  <i class="ui-heart"></i>
-                  <span>Wishlist</span>
-                </a>
-              </div>
-            </div>
-
-            <div class="product__details">
-              <h3 class="product__title">
-                <a href="single-product.html">Mint Maxi Dress</a>
-              </h3>
-            </div>
-
-            <span class="product__price">
-              <ins>
-                <span class="amount">$17.99</span>
-              </ins>
-              <del>
-                <span>$30.00</span>
-              </del>
-            </span>
-          </div> <!-- end product -->
-
-          <div class="col-lg-2 col-sm-4 product">
-            <div class="product__img-holder">
-              <a href="single-product.html" class="product__link" aria-label="Product">
-                <img src="user/img/shop/product_4.jpg" alt="" class="product__img">
-                <img src="user/img/shop/product_back_4.jpg" alt="" class="product__img-back">
-              </a>
-              <div class="product__actions">
-                <a href="quickview.html" class="product__quickview">
-                  <i class="ui-eye"></i>
-                  <span>Quick View</span>
-                </a>
-                <a href="#" class="product__add-to-wishlist">
-                  <i class="ui-heart"></i>
-                  <span>Wishlist</span>
-                </a>
-              </div>
-            </div>
-
-            <div class="product__details">
-              <h3 class="product__title">
-                <a href="single-product.html">White Flounce Dress</a>
-              </h3>
-            </div>
-
-            <span class="product__price">
-              <ins>
-                <span class="amount">$15.99</span>
-              </ins>
-              <del>
-                <span>$27.00</span>
-              </del>
-            </span>
-          </div> <!-- end product -->
-    
-        </div> <!-- end row -->
-      </div> <!-- end container -->
-    </section> <!-- end new arrivals -->
+   
+    <!-- end new arrivals -->
 
     <!-- Testimonials -->
-    <section class="section-wrap">
-      <div class="container">
-
-        <div class="heading-row mb-0">
-          <div class="text-center">
-            <h2 class="heading">
-              What the customers say?
-            </h2>
-          </div>
-        </div>
-
-        <div class="row justify-content-center">
-          <div class="col-md-8">
-
-            <div id="owl-testimonials" class="owl-carousel owl-theme owl-carousel--dark-arrows owl-carousel--visible-arrows">
-
-              <div class="testimonial">
-                <div class="testimonial__rating text-center">
-                  <span class="rating"></span>
-                  <span class="rating__time">20 days ago</span>
-                </div>
-                <p class="testimonial__text">I’am amazed, I should say thank you so much for your awesome template. Design is so good and neat, every detail has been taken care these team are realy amazing and talented!</p>
-                <span class="testimonial__author">Camille Ragpa</span>
-              </div>
-
-              <div class="testimonial">
-                <div class="testimonial__rating text-center">
-                  <span class="rating"></span>
-                  <span class="rating__time">20 days ago</span>
-                </div>
-                <p class="testimonial__text">I’am amazed, I should say thank you so much for your awesome template. Design is so good and neat, every detail has been taken care these team are realy amazing and talented!</p>
-                <span class="testimonial__author">Camille Ragpa</span>
-              </div>
-
-              <div class="testimonial">
-                <div class="testimonial__rating text-center">
-                  <span class="rating"></span>
-                  <span class="rating__time">20 days ago</span>
-                </div>
-                <p class="testimonial__text">I’am amazed, I should say thank you so much for your awesome template. Design is so good and neat, every detail has been taken care these team are realy amazing and talented!</p>
-                <span class="testimonial__author">Camille Ragpa</span>
-              </div>
-
-            </div> <!-- end carousel -->
-          </div>
-        </div> <!-- end carousel row -->
-
-      </div>
-    </section> <!-- end testimonials -->
+    
+    <!-- end testimonials -->
 
     <!-- Footer -->
     <%- include('includes/footer-nav.ejs') %>

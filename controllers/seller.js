@@ -3,13 +3,16 @@ const Category = require("../models/category");
 const Seller = require("../models/seller");
 const SubCategory = require("../models/sub-category");
 const Product = require("../models/product");
+const Label = require("../models/productLabel");
 const fs = require("fs");
 exports.getIndex = async (req, res, next) => {
-  const productCount = await Product.findAndCountAll({where: {sellerId: req.session.sellerData.id}});
+  const productCount = await Product.findAndCountAll({
+    where: { sellerId: req.session.sellerData.id },
+  });
   res.render("seller/index", {
     path: "/",
     sidePath: "/",
-    productCount: productCount.count
+    productCount: productCount.count,
   });
 };
 
@@ -379,8 +382,8 @@ exports.postEditProduct = async (req, res, next) => {
       product.smallBack = smallBack.path;
     }
     const pro = await product.save();
-    console.log(pro + 'pro');
-    res.redirect('/seller/view-product');
+    console.log(pro + "pro");
+    res.redirect("/seller/view-product");
   } catch (err) {
     console.log(err);
   }
@@ -389,24 +392,71 @@ exports.postEditProduct = async (req, res, next) => {
 exports.deleteProduct = (req, res, next) => {
   const proId = req.params.proId;
   Product.findByPk(proId)
-  .then(product => {
-    deleteFile(product.mainImage);
-    deleteFile(product.smallBack);
-    deleteFile(product.smallFront);
-    return Product.destroy({where: {id: proId}});
-  })
-  .then(() => {
-    res.redirect('/seller/view-product');
-  })
-  .catch(err => {
-    console.log(err);
-  })
+    .then((product) => {
+      deleteFile(product.mainImage);
+      deleteFile(product.smallBack);
+      deleteFile(product.smallFront);
+      return Product.destroy({ where: { id: proId } });
+    })
+    .then(() => {
+      res.redirect("/seller/view-product");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 const deleteFile = (filePath) => {
   fs.unlink(filePath, (err) => {
-      if(err){
-          console.log(err);
-      }
+    if (err) {
+      console.log(err);
+    }
   });
-}
+};
+
+exports.getLabels = async (req, res, next) => {
+  const proId = req.params.proId;
+  try {
+    const product = await Product.findByPk(proId);
+    const labels = await Label.findAll({ where: { productId: proId } });
+    console.log(labels);
+    res.render("seller/labels-view", {
+      path: "",
+      sidePath: "/view-product",
+      product: product,
+      labels: labels,
+      errorMessage: "",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.postAddLabels = async (req, res, next) => {
+  const errors = validationResult(req);
+  const label = req.body.label;
+  const value = req.body.value;
+  const proId = req.body.proId;
+  try {
+    const product = await Product.findByPk(proId);
+    if (!errors.isEmpty()) {
+      const labels = await Label.findAll({ where: { productId: proId } });
+      //console.log(labels);
+      return res.render("seller/labels-view", {
+        path: "",
+        sidePath: "/view-product",
+        product: product,
+        labels: labels,
+        errorMessage: errors.array()[0].msg,
+      });
+    }
+    await Label.create({
+      label: label,
+      value: value,
+      productId: product.id
+    });
+    res.redirect('/seller/add-labels/'+proId);
+  } catch (err) {
+    console.log(err);
+  }
+};

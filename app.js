@@ -105,6 +105,7 @@ Product.belongsTo(Seller, { constraint: true, onDelete: "CASCADE" });
 SubCategory.belongsTo(Category, { constraint: true, onDelete: "CASCADE" });
 Category.hasMany(SubCategory, { constraint: true, onDelete: "CASCADE" });
 ProductLabel.belongsTo(Product, { constraint: true, onDelete: "CASCADE" })
+Product.hasMany(ProductLabel, { constraint: true, onDelete: "CASCADE" });
 //Instatiate Server
 sequelize
   // .sync({ force: true })

@@ -380,3 +380,19 @@ exports.postLogout = (req, res, next) => {
   }
   res.redirect("/admin");
 };
+
+exports.loginAsSeller = (req, res, next) => {
+  const sellerId = req.params.sellerId;
+  Seller.findByPk(sellerId)
+  .then(seller => {
+    if(!seller){
+      throw new Error('Seller Not Found');
+    }
+    req.session.isSellerLoggedIn = true;
+    req.session.sellerData = seller;
+    res.redirect('/seller');
+  })
+  .catch(err => {
+    console.log(err);
+  })
+};

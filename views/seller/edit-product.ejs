@@ -16,84 +16,92 @@
                             <p>Error: <%= errorMessage %></p>
                         </div>
                     <% } %>
-                    <form action="/seller/edit-product" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="id" value="<%= product.id %>">
-                        <div class="form-group">
-                            <label for="title">Title</label>
-                            <input type="text" name="title" id="title" value="<%= product.title %>" class="form-control">
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="float-right btn btn-dark" href="/seller/add-labels/<%= product.id %>">Add Labels</a>
                         </div>
-                        <div class="row">
-                            <div class="col-4">
+                        <div class="col-12">
+                            <form action="/seller/edit-product" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="id" value="<%= product.id %>">
                                 <div class="form-group">
-                                    <label for="mrp">MRP</label>
-                                    <input type="text" name="mrp" id="mrp" value="<%= product.mrp %>" class="form-control">
+                                    <label for="title">Title</label>
+                                    <input type="text" name="title" id="title" value="<%= product.title %>" class="form-control">
                                 </div>
-                            </div>
-                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="mrp">MRP</label>
+                                            <input type="text" name="mrp" id="mrp" value="<%= product.mrp %>" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="salePrice">Sale Price</label>
+                                            <input type="text" name="salePrice" id="salePrice" value="<%= product.salePrice %>" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="stock">Stock</label>
+                                            <input type="text" name="stock" id="stock" value="<%= product.stock %>" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="image">Main-Image (582 X 800 Pixels) <a href="/seller/see-image/<%= product.mainImage %>">Old Image</a></label>
+                                            <input type="file" name="main_image" id="image" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="image">Small-Front (236 X 325 Pixels) <a href="/seller/see-image/<%= product.smallFront %>">Old Image</a></label>
+                                            <input type="file" name="small_front" id="image" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="image">Small-Back (236 X 325 Pixels) <a href="/seller/see-image/<%= product.smallBack %>">Old Image</a></label>
+                                            <input type="file" name="small_back" id="image" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
-                                    <label for="salePrice">Sale Price</label>
-                                    <input type="text" name="salePrice" id="salePrice" value="<%= product.salePrice %>" class="form-control">
+                                    <label for="category">Category</label>
+                                    <select name="category" id="category" class="form-control">
+                                        
+                                        <% cat.forEach(catItem => { %>
+                                            <% if(product.category.id == catItem.id){ %>
+                                                <option selected value="<%= catItem.id %>"><%= catItem.cat_name %></option>
+                                            <% }else { %>
+                                                <option value="<%= catItem.id %>"><%= catItem.cat_name %></option>
+                                            <% } %>                                    
+                                        <% }) %>
+                                    </select>
                                 </div>
-                            </div>
-                            <div class="col-4">
                                 <div class="form-group">
-                                    <label for="stock">Stock</label>
-                                    <input type="text" name="stock" id="stock" value="<%= product.stock %>" class="form-control">
+                                    <label for="subcategory">Sub-Category</label>
+                                    <select name="subcategory" id="subcategory" class="form-control">
+                                        <% subcat.forEach(catItem => { %>
+                                            <% if(product.subCategory.id == catItem.id){ %>
+                                                <option selected value="<%= catItem.id %>"><%= catItem.sub_cat_name %> - <%= catItem.category.cat_name %></option>
+                                            <% }else { %>
+                                                <option value="<%= catItem.id %>"><%= catItem.sub_cat_name %> - <%= catItem.category.cat_name %></option>
+                                            <% } %>                               
+                                            
+                                        <% }) %>
+                                    </select>
                                 </div>
-                            </div>
+                                <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <textarea name="description" id="description" class="form-control" cols="30" rows="5"><%= product.description %></textarea>
+                                </div>
+                                <input type="submit" name="btnAddProduct value="Add" class="btn btn-success">
+                            </form>
                         </div>
-                        <div class="row">
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label for="image">Main-Image (582 X 800 Pixels) <a href="/seller/see-image/<%= product.mainImage %>">Old Image</a></label>
-                                    <input type="file" name="main_image" id="image" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label for="image">Small-Front (236 X 325 Pixels) <a href="/seller/see-image/<%= product.smallFront %>">Old Image</a></label>
-                                    <input type="file" name="small_front" id="image" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label for="image">Small-Back (236 X 325 Pixels) <a href="/seller/see-image/<%= product.smallBack %>">Old Image</a></label>
-                                    <input type="file" name="small_back" id="image" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="category">Category</label>
-                            <select name="category" id="category" class="form-control">
-                                
-                                <% cat.forEach(catItem => { %>
-                                    <% if(product.category.id == catItem.id){ %>
-                                        <option selected value="<%= catItem.id %>"><%= catItem.cat_name %></option>
-                                    <% }else { %>
-                                        <option value="<%= catItem.id %>"><%= catItem.cat_name %></option>
-                                    <% } %>                                    
-                                <% }) %>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="subcategory">Sub-Category</label>
-                            <select name="subcategory" id="subcategory" class="form-control">
-                                <% subcat.forEach(catItem => { %>
-                                    <% if(product.subCategory.id == catItem.id){ %>
-                                        <option selected value="<%= catItem.id %>"><%= catItem.sub_cat_name %> - <%= catItem.category.cat_name %></option>
-                                    <% }else { %>
-                                        <option value="<%= catItem.id %>"><%= catItem.sub_cat_name %> - <%= catItem.category.cat_name %></option>
-                                    <% } %>                               
-                                    
-                                <% }) %>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <textarea name="description" id="description" class="form-control" cols="30" rows="5"><%= product.description %></textarea>
-                        </div>
-                        <input type="submit" name="btnAddProduct value="Add" class="btn btn-success">
-                    </form>
+                    </div>
+                    
                 </div>
             </div>
         </div>        

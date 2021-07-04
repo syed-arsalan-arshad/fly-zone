@@ -107,7 +107,11 @@ router.post(
   sellerController.postEditProduct
 );
 
-router.get('/delete-product/:proId', isSellerAuth, sellerController.deleteProduct);
+router.get(
+  "/delete-product/:proId",
+  isSellerAuth,
+  sellerController.deleteProduct
+);
 
 router.get(
   "/product-details/:proId",
@@ -119,6 +123,18 @@ router.get(
   "/see-image/images/:imagePath",
   isSellerAuth,
   sellerController.seeImage
+);
+
+router.get("/add-labels/:proId", isSellerAuth, sellerController.getLabels);
+
+router.post(
+  "/add-labels/:proId",
+  isSellerAuth,
+  [
+    body("label").not().isEmpty().withMessage("Label Field Must Be Filled"),
+    body("value").not().isEmpty().withMessage("Value Field Must Be Filled"),
+  ],
+  sellerController.postAddLabels
 );
 
 module.exports = router;
