@@ -74,7 +74,11 @@ exports.verifyOTP = async (req, res, next) => {
     // console.log(user);
     req.session.userData = user;
     req.session.isUserLoggedIn = true;
-    res.redirect("/");
+    if(req.session.url){
+      res.redirect(req.session.url);
+    }else{
+      res.redirect("/");
+    }
   } catch (err) {
     console.log(err);
   }
@@ -135,13 +139,17 @@ exports.postUpdateProfile = (req, res, next) => {
 };
 
 exports.getProductDetails = async (req, res, next) => {
+  // console.log(req.session.userData);
   const proId = req.params.proId;
+  if(!req.session.isUserLoggedIn){
+    req.session.url = req.protocol + '://' + req.get('host') + req.originalUrl;
+  }
   try {
     const product = await Product.findByPk(proId, {
       include: [Seller, ProductLabel],
     });
     const menuList = await Category.findAll({ include: SubCategory });
-    console.log(product);
+    // console.log(product);
     res.render("user/single-product", {
       pageTitle: product.title,
       product: product,

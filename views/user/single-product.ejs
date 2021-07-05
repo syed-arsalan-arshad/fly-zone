@@ -76,7 +76,7 @@
               <a href="#" class="colors__item pink"></a>
             </div> -->
             <form action="">
-              <div class="">
+              <div class="size-quantity clearfix">
                 <!-- <div class="size">
                   <label>Size</label>
                   <select name="size" id="size__select" class="size__select">
@@ -88,16 +88,20 @@
                   </select>
                 </div> -->
                 
-                <div class="form-group">
-                  <label>Quantity</label>                 
-                  <select name="quantity" id="quantity__select" class="quantity__select">
+                <div class="quantity">
+                  <label class="d-block">Quantity</label>                 
+                  <!-- <select name="quantity" id="quantity__select" class="quantity__select">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
                     <option value="5">5</option>
-                  </select>
-                  
+                  </select> -->
+                  <div class="quantity buttons_added">
+                    <input type="button" value="-" class="minus">
+                    <input type="number" step="1" min="0" value="1" title="Qty" class="input-text qty text">
+                    <input type="button" value="+" class="plus">
+                  </div>
                 </div>
               </div>            
   
@@ -109,7 +113,7 @@
                       <span>Add To Cart</span>
                     </a>
                   <% }else { %>
-                    <a href="" class="btn btn-lg btn-color product-single__add-to-cart">
+                    <a href="/login" class="btn btn-lg btn-color product-single__add-to-cart">
                       <i class="ui-bag"></i>
                       <span>Login To Purchase</span>
                     </a>
