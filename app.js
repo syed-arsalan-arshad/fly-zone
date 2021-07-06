@@ -19,6 +19,8 @@ const Seller = require("./models/seller");
 const multer = require("multer");
 const { copyFileSync } = require("fs");
 const ProductLabel = require("./models/productLabel");
+const Cart = require("./models/cart");
+const User = require("./models/user");
 
 const store = new SessionStore({
   db: sequelize,
@@ -106,6 +108,10 @@ SubCategory.belongsTo(Category, { constraint: true, onDelete: "CASCADE" });
 Category.hasMany(SubCategory, { constraint: true, onDelete: "CASCADE" });
 ProductLabel.belongsTo(Product, { constraint: true, onDelete: "CASCADE" })
 Product.hasMany(ProductLabel, { constraint: true, onDelete: "CASCADE" });
+Cart.belongsTo(Product, { constraint: true, onDelete: "CASCADE" });
+Product.hasMany(Cart, { constraint: true, onDelete: "CASCADE" });
+Cart.belongsTo(User, { constraint: true, onDelete: "CASCADE" });
+User.hasMany(Cart, { constraint: true, onDelete: "CASCADE" });
 //Instatiate Server
 sequelize
   // .sync({ force: true })

@@ -75,7 +75,7 @@
               <a href="#" class="colors__item black"></a>
               <a href="#" class="colors__item pink"></a>
             </div> -->
-            <form action="">
+            <form action="/add-to-cart" method="POST">
               <div class="size-quantity clearfix">
                 <!-- <div class="size">
                   <label>Size</label>
@@ -87,31 +87,21 @@
                     <option value="xl">XL</option>
                   </select>
                 </div> -->
-                
-                <div class="quantity">
-                  <label class="d-block">Quantity</label>                 
-                  <!-- <select name="quantity" id="quantity__select" class="quantity__select">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                  </select> -->
-                  <div class="quantity buttons_added">
-                    <input type="button" value="-" class="minus">
-                    <input type="number" step="1" min="0" value="1" title="Qty" class="input-text qty text">
-                    <input type="button" value="+" class="plus">
-                  </div>
+                <div class="quantity buttons_added">
+                  <label class="d-block">Quantity</label>
+                  <input type="button" value="-" class="minus">
+                  <input type="number" name="quantity" step="1" min="0" value="1" title="Qty" class="input-text qty text">
+                  <input type="button" value="+" class="plus">
                 </div>
               </div>            
   
               <div class="row row-10 product-single__actions clearfix">
                 <div class="col">
                   <% if(isUserLoggedIn){ %>
-                    <a href="" class="btn btn-lg btn-color product-single__add-to-cart">
+                    <button type="submit" href="" class="btn btn-lg btn-color product-single__add-to-cart">
                       <i class="ui-bag"></i>
                       <span>Add To Cart</span>
-                    </a>
+                    </button>
                   <% }else { %>
                     <a href="/login" class="btn btn-lg btn-color product-single__add-to-cart">
                       <i class="ui-bag"></i>
@@ -152,7 +142,7 @@
                 </div>
                 <div id="collapseOne" class="collapse show" data-parent="#accordion" role="tabpanel" aria-labelledby="headingOne">
                   <div class="accordion__body">
-                    <%= product.description %>
+                    <%- product.description %>
                   </div>
                 </div>
               </div>
