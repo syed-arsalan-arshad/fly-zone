@@ -94,14 +94,21 @@
                   <input type="button" value="+" class="plus">
                 </div>
               </div>            
-  
+              <input type="hidden" value="<%= product.id %>" name="proId">
               <div class="row row-10 product-single__actions clearfix">
                 <div class="col">
                   <% if(isUserLoggedIn){ %>
+                    <% if(isProdInCart){ %>
+                      <a href="/cart" class="btn btn-lg btn-color product-single__add-to-cart">
+                        <i class="ui-bag"></i>
+                        <span>Go To Cart</span>
+                      </a>
+                    <% }else { %>
                     <button type="submit" href="" class="btn btn-lg btn-color product-single__add-to-cart">
                       <i class="ui-bag"></i>
                       <span>Add To Cart</span>
                     </button>
+                    <% } %>
                   <% }else { %>
                     <a href="/login" class="btn btn-lg btn-color product-single__add-to-cart">
                       <i class="ui-bag"></i>

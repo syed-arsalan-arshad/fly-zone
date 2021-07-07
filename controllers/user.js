@@ -5,6 +5,7 @@ const User = require("../models/user");
 const { validationResult } = require("express-validator/check");
 const Seller = require("../models/seller");
 const ProductLabel = require("../models/productLabel");
+const Cart = require("../models/cart");
 
 exports.getLogin = (req, res, next) => {
   Category.findAll({ include: SubCategory })
@@ -144,7 +145,14 @@ exports.getProductDetails = async (req, res, next) => {
   if(!req.session.isUserLoggedIn){
     req.session.url = req.protocol + '://' + req.get('host') + req.originalUrl;
   }
+  let isProdInCart = false;
   try {
+    if(req.session.isUserLoggedIn){
+      const prodInCart = await Cart.findAll({where: {userId: req.session.userData.id, productId: proId}});
+      if(prodInCart.length >= 1){
+        isProdInCart = true;
+      }
+    }
     const product = await Product.findByPk(proId, {
       include: [Seller, ProductLabel],
     });
@@ -154,6 +162,7 @@ exports.getProductDetails = async (req, res, next) => {
       pageTitle: product.title,
       product: product,
       menuList: menuList,
+      isProdInCart: isProdInCart
     });
   } catch (err) {
     console.log(err);
@@ -263,4 +272,21 @@ exports.getCart = (req, res, next) => {
     .catch((err) => {
       console.log(err);
     });
+};
+
+exports.addToCart = (req, res, next) => {
+  const proId = req.body.proId;
+  const quantity = req.body.quantity;
+  Cart.create({
+    productId: proId,
+    userId: req.session.userData.id,
+    quantity: quantity
+  })
+  .then(cart => {
+    console.log(cart);
+    
+  })
+  .catch(err => {
+    console.log(err);
+  })
 };
