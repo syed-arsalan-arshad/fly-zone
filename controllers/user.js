@@ -15,6 +15,7 @@ exports.getLogin = (req, res, next) => {
         pageTitle: "Login",
         menuList: cat,
         errorMessage: "",
+        cartCount: req.session.userCart
       });
     })
     .catch((err) => {
@@ -34,6 +35,7 @@ exports.sendOTP = async (req, res, next) => {
         pageTitle: "Login",
         menuList: cat,
         errorMessage: errors.array()[0].msg,
+        cartCount: req.session.userCart
       });
     }
     res.render("user/login-otp", {
@@ -43,6 +45,7 @@ exports.sendOTP = async (req, res, next) => {
       mobileNo: mobile,
       errorMessage:
         "One Time Password(OTP) is sent to your mobile no " + mobile,
+      cartCount: req.session.userCart
     });
   } catch (err) {
     console.log(err);
@@ -63,6 +66,7 @@ exports.verifyOTP = async (req, res, next) => {
         otp: oldOTP,
         mobileNo: mobileNo,
         errorMessage: "OTP did not match",
+        cartCount: req.session.userCart
       });
     }
     let userCount = await User.findAndCountAll({ where: { mobile: mobileNo } });
@@ -282,7 +286,7 @@ exports.getCart = async (req, res, next) => {
   try {
     const cat = await Category.findAll({ include: SubCategory });
     const cartProd = await Cart.findAll({include: Product}, {where: {userId: req.session.userData.is}});
-    console.log(cartProd);
+    //console.log(cartProd);
     res.render("user/cart", {
       pageTitle: "Cart | Fly-Zone",
       menuList: cat,
@@ -309,7 +313,8 @@ exports.addToCart = (req, res, next) => {
     })
     .then((cartCount) => {
       req.session.userCart = cartCount.count;
-      console.log("/cart");
+      console.log(req.session.userCart);
+      res.redirect('/cart');
     })
     .catch((err) => {
       console.log(err);

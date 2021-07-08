@@ -28,17 +28,19 @@
                                 <tbody>
                                     <% i = 1;
                                     prods.forEach(product => { %> 
-                                        <td><%= i %></td>
-                                        <td><%= product.title %></td>
-                                        <td><img src="/<%= product.mainImage %>" alt="" class="img-fluid" style="height: 50px;"></td>
-                                        <td><%= product.category.cat_name %></td>
-                                        <td><%= product.subCategory.sub_cat_name %></td>
-                                        <td><button class="btn btn-danger">&#8377;<%= product.mrp %></button></td>
-                                        <td><button class="btn btn-success">&#8377;<%= product.salePrice %></button></td>
-                                        <td><button class="btn btn-info"><%= Math.round((product.salePrice/product.mrp)*100) %>%</button></td>
-                                        <td><a href="/seller/edit-product/<%= product.id %>">Edit</a></td>
-                                        <td><a href="/seller/product-details/<%= product.id %>">View</a></td>
-                                        <td><a href="/seller/delete-product/<%= product.id %>">Delete</a></td>
+                                        <tr>
+                                            <td><%= i %></td>
+                                            <td><%= product.title %></td>
+                                            <td><img src="/<%= product.mainImage %>" alt="" class="img-fluid" style="height: 50px;"></td>
+                                            <td><%= product.category.cat_name %></td>
+                                            <td><%= product.subCategory.sub_cat_name %></td>
+                                            <td><button class="btn btn-danger">&#8377;<%= product.mrp %></button></td>
+                                            <td><button class="btn btn-success">&#8377;<%= product.salePrice %></button></td>
+                                            <td><button class="btn btn-info"><%= Math.round((product.salePrice/product.mrp)*100) %>%</button></td>
+                                            <td><a href="/seller/edit-product/<%= product.id %>">Edit</a></td>
+                                            <td><a href="/seller/product-details/<%= product.id %>">View</a></td>
+                                            <td><a href="/seller/delete-product/<%= product.id %>">Delete</a></td>
+                                        </tr>
 
                                     <% i++; }); %>
                                 </tbody>
