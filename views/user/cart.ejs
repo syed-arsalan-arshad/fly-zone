@@ -10,7 +10,7 @@
   <main class="main oh" id="main">
 
     <!-- Navigation -->
-    <%- include('includes/top-navbar.ejs', {menuList: menuList}) %>
+    <%- include('includes/top-navbar.ejs', {menuList: menuList, cartCount: cartCount}) %>
     <!-- end navigation -->
 
     <!-- Page Title -->
@@ -36,39 +36,40 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="cart_item">
-                <td class="product-thumbnail">
-                  <a href="#">
-                    <img src="img/shop/product_1.jpg" alt="">
-                  </a>
-                </td>
-                <td class="product-name">
-                  <a href="#">Joeby Tailored Trouser</a>
-                  <ul>
-                    <li>Size: XL</li>
-                    <li>Color: White</li>
-                  </ul>
-                </td>
-                <td class="product-price">
-                  <span class="amount">$1250.00</span>
-                </td>
-                <td class="product-quantity">
-                  <div class="quantity buttons_added">
-                    <input type="button" value="-" class="minus">
-                    <input type="number" step="1" min="0" value="1" title="Qty" class="input-text qty text">
-                    <input type="button" value="+" class="plus">
-                  </div>
-                </td>
-                <td class="product-subtotal">
-                  <span class="amount">$1250.00</span>
-                </td>
-                <td class="product-remove">
-                  <a href="#" class="remove" title="Remove this item">
-                    <i class="ui-close"></i>
-                  </a>
-                </td>
-              </tr>
-
+              <% cartProd.forEach(cartItem => { %> 
+                <tr class="cart_item">
+                  <td class="product-thumbnail">
+                    <a href="#">
+                      <img src="/<%= cartItem.product.smallFront %>" alt="">
+                    </a>
+                  </td>
+                  <td class="product-name">
+                    <a href="#"><%= cartItem.product.title %></a>
+                    <!-- <ul>
+                      <li>Size: XL</li>
+                      <li>Color: White</li>
+                    </ul> -->
+                  </td>
+                  <td class="product-price">
+                    <span class="amount">&#8377;<%= cartItem.product.salePrice %></span>
+                  </td>
+                  <td class="product-quantity">
+                    <div class="quantity buttons_added">
+                      <input type="button" value="-" class="minus">
+                      <input type="number" step="1" min="0" value="<%= cartItem.quantity %>" title="Qty" class="input-text qty text">
+                      <input type="button" value="+" class="plus">
+                    </div>
+                  </td>
+                  <td class="product-subtotal">
+                    <span class="amount">&#8377;<%= (cartItem.product.salePrice * cartItem.quantity) %></span>
+                  </td>
+                  <td class="product-remove">
+                    <a href="#" class="remove" title="Remove this item">
+                      <i class="ui-close"></i>
+                    </a>
+                  </td>
+                </tr>
+              <% }); %>
               <tr class="cart_item">
                 <td class="product-thumbnail">
                   <a href="#">

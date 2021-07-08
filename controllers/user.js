@@ -282,6 +282,7 @@ exports.getCart = async (req, res, next) => {
   try {
     const cat = await Category.findAll({ include: SubCategory });
     const cartProd = await Cart.findAll({include: Product}, {where: {userId: req.session.userData.is}});
+    console.log(cartProd);
     res.render("user/cart", {
       pageTitle: "Cart | Fly-Zone",
       menuList: cat,
