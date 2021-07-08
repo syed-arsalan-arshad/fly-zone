@@ -73,11 +73,19 @@ exports.verifyOTP = async (req, res, next) => {
       user = user[0];
     }
     // console.log(user);
+    const cartCount = await Cart.findAndCountAll({
+      where: { userId: user.id },
+    });
+    // console.log(cartCount);
+    user.cartCount = cartCount.count;
+    req.session.userCart = cartCount.count;
     req.session.userData = user;
     req.session.isUserLoggedIn = true;
-    if(req.session.url){
-      res.redirect(req.session.url);
-    }else{
+    if (req.session.url) {
+      const url = req.session.url;
+      req.session.url = "";
+      res.redirect(url);
+    } else {
       res.redirect("/");
     }
   } catch (err) {
@@ -142,14 +150,20 @@ exports.postUpdateProfile = (req, res, next) => {
 exports.getProductDetails = async (req, res, next) => {
   // console.log(req.session.userData);
   const proId = req.params.proId;
-  if(!req.session.isUserLoggedIn){
-    req.session.url = req.protocol + '://' + req.get('host') + req.originalUrl;
+  if (!req.session.isUserLoggedIn) {
+    req.session.url = req.protocol + "://" + req.get("host") + req.originalUrl;
+  }
+  let cartCount = 0;
+  if (req.session.isUserLoggedIn) {
+    cartCount = req.session.userCart;
   }
   let isProdInCart = false;
   try {
-    if(req.session.isUserLoggedIn){
-      const prodInCart = await Cart.findAll({where: {userId: req.session.userData.id, productId: proId}});
-      if(prodInCart.length >= 1){
+    if (req.session.isUserLoggedIn) {
+      const prodInCart = await Cart.findAll({
+        where: { userId: req.session.userData.id, productId: proId },
+      });
+      if (prodInCart.length >= 1) {
         isProdInCart = true;
       }
     }
@@ -162,55 +176,44 @@ exports.getProductDetails = async (req, res, next) => {
       pageTitle: product.title,
       product: product,
       menuList: menuList,
-      isProdInCart: isProdInCart
+      isProdInCart: isProdInCart,
+      cartCount: cartCount,
     });
   } catch (err) {
     console.log(err);
   }
 };
 
-exports.getIndex = (req, res, next) => {
-  let userCat;
-  // let finalCat = [];
-  Category.findAll({ include: SubCategory })
-    .then((cat) => {
-      userCat = cat;
-      // console.log(userCat);
-      return Product.findAll();
-      // return SubCategory.findAll();
-    })
-    .then((products) => {
-      res.render("user/index", {
-        pageTitle: "Home | Fly-Zone",
-        menuList: userCat,
-        products: products,
-      });
-    })
-    // .then(subCat => {
-    //     finalCat = userCat.map(cat => {
-    //         // console.log(cat);
-    //         // let d = [];
-    //         // subCat.forEach(subcat => {
-    //         //     if(cat.id == subcat.categoryId){
-    //         //         d.push(subcat);
-    //         //     }
-    //         // });
-    //         // // console.log(cat);
-    //         // return {CatData: cat, SubCat: d};
-    //     });
-
-    // })
-    .catch((err) => {
-      console.log(err);
+exports.getIndex = async (req, res, next) => {
+  try {
+    let cartCount = 0;
+    if (req.session.isUserLoggedIn) {
+      cartCount = req.session.userCart;
+    }
+    const cat = await Category.findAll({ include: SubCategory });
+    const products = await Product.findAll();
+    res.render("user/index", {
+      pageTitle: "Home | Fly-Zone",
+      menuList: cat,
+      products: products,
+      cartCount: cartCount,
     });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 exports.getAboutUs = (req, res, next) => {
+  let cartCount = 0;
+  if (req.session.isUserLoggedIn) {
+    cartCount = req.session.userCart;
+  }
   Category.findAll({ include: SubCategory })
     .then((cat) => {
       res.render("user/about-us", {
         pageTitle: "About Us | Fly-Zone",
         menuList: cat,
+        cartCount: cartCount,
       });
     })
     .catch((err) => {
@@ -219,11 +222,16 @@ exports.getAboutUs = (req, res, next) => {
 };
 
 exports.getContactUs = (req, res, next) => {
+  let cartCount = 0;
+  if (req.session.isUserLoggedIn) {
+    cartCount = req.session.userCart;
+  }
   Category.findAll({ include: SubCategory })
     .then((cat) => {
       res.render("user/contact-us", {
         pageTitle: "Contact Us | Fly-Zone",
         menuList: cat,
+        cartCount: cartCount,
       });
     })
     .catch((err) => {
@@ -232,11 +240,16 @@ exports.getContactUs = (req, res, next) => {
 };
 
 exports.getCatalog = (req, res, next) => {
+  let cartCount = 0;
+  if (req.session.isUserLoggedIn) {
+    cartCount = req.session.userCart;
+  }
   Category.findAll({ include: SubCategory })
     .then((cat) => {
       res.render("user/catalog", {
         pageTitle: "Catalog | Fly-Zone",
         menuList: cat,
+        cartCount: cartCount,
       });
     })
     .catch((err) => {
@@ -248,30 +261,36 @@ exports.getCategoryWiseProduct = (req, res, next) => {
   const catId = req.params.catId;
 };
 
-exports.getSingleProduct = (req, res, next) => {
-  Category.findAll({ include: SubCategory })
-    .then((cat) => {
-      res.render("user/single-product", {
-        pageTitle: "Single | Fly-Zone",
-        menuList: cat,
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+// exports.getSingleProduct = (req, res, next) => {
+//   Category.findAll({ include: SubCategory })
+//     .then((cat) => {
+//       res.render("user/single-product", {
+//         pageTitle: "Single | Fly-Zone",
+//         menuList: cat,
+//       });
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };
 
-exports.getCart = (req, res, next) => {
-  Category.findAll({ include: SubCategory })
-    .then((cat) => {
-      res.render("user/cart", {
-        pageTitle: "Cart | Fly-Zone",
-        menuList: cat,
-      });
-    })
-    .catch((err) => {
-      console.log(err);
+exports.getCart = async (req, res, next) => {
+  let cartCount = 0;
+  if (req.session.isUserLoggedIn) {
+    cartCount = req.session.userCart;
+  }
+  try {
+    const cat = await Category.findAll({ include: SubCategory });
+    const cartProd = await Cart.findAll({include: Product}, {where: {userId: req.session.userData.is}});
+    res.render("user/cart", {
+      pageTitle: "Cart | Fly-Zone",
+      menuList: cat,
+      cartCount: cartCount,
+      cartProd: cartProd
     });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 exports.addToCart = (req, res, next) => {
@@ -280,13 +299,18 @@ exports.addToCart = (req, res, next) => {
   Cart.create({
     productId: proId,
     userId: req.session.userData.id,
-    quantity: quantity
+    quantity: quantity,
   })
-  .then(cart => {
-    console.log(cart);
-    
-  })
-  .catch(err => {
-    console.log(err);
-  })
+    .then((cart) => {
+      return Cart.findAndCountAll({
+        where: { userId: req.session.userData.id },
+      });
+    })
+    .then((cartCount) => {
+      req.session.userCart = cartCount.count;
+      console.log("/cart");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };

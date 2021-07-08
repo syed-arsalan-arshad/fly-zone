@@ -11,8 +11,6 @@ router.get('/category/sub-category/:subId');
 
 router.get('/catalog', userController.getCatalog);
 
-router.get('/product', userController.getSingleProduct);
-
 router.get('/cart', userController.getCart);
 
 router.get('/product-details/:proId', userController.getProductDetails);
