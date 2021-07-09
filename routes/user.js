@@ -5,9 +5,9 @@ const isUserAuth = require('../middleware/is-userAuth');
 
 router.get('/', userController.getIndex);
 
-router.get('/category/:catId');
+router.get('/category/:catId', userController.getCategoryWiseProduct);
 
-router.get('/category/sub-category/:subId');
+router.get('/category/sub-category/:subId', userController.getSubCategoryWiseProduct);
 
 router.get('/catalog', userController.getCatalog);
 

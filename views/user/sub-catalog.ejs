@@ -1,5 +1,5 @@
 <!-- Links and Head -->
-<%- include('includes/header.ejs', {pageTitle: pageTitle}) %>
+<%- include('includes/header.ejs', {pageTitle: pageTitle.category.cat_name + '-' + pageTitle.sub_cat_name}) %>
   <!-- Preloader -->
   <%- include('includes/pre-loader.ejs') %>
   
@@ -24,7 +24,10 @@
             <a href="/">Home</a>
           </li>
           <li>
-            <%= pageTitle %>
+            <a href="/category/<%= pageTitle.categoryId %>"><%= pageTitle.category.cat_name %></a>
+          </li>
+          <li class="active">
+            <%= pageTitle.sub_cat_name %>
           </li>
         </ol>
 

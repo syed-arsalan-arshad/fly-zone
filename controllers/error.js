@@ -6,7 +6,8 @@ exports.get404 = (req, res, next) => {
     .then(cat => {
         res.render('user/404', {
             pageTitle: 'Error | Fly-Zone',
-            menuList: cat
+            menuList: cat,
+            cartCount: 0
         });
     })
     .catch(err => {

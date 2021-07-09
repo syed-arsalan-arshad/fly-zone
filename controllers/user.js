@@ -261,8 +261,52 @@ exports.getCatalog = (req, res, next) => {
     });
 };
 
-exports.getCategoryWiseProduct = (req, res, next) => {
+exports.getCategoryWiseProduct = async (req, res, next) => {
   const catId = req.params.catId;
+  let cartCount = 0;
+  try{ 
+    const categoryData = await Category.findByPk(catId);
+    const product = await Product.findAll({where: {categoryId: catId}});
+    const cat = await Category.findAll({ include: SubCategory });
+    if(req.session.isUserLoggedIn){
+      cartCount = Cart.findAndCountAll({where: {userId: req.session.userData.id}}).count;
+    }
+
+    res.render("user/catalog", {
+      pageTitle: categoryData.cat_name,
+      menuList: cat,
+      cartCount: cartCount,
+      product: product
+    });
+
+  }catch(err){
+    console.log(err);
+  }
+
+};
+
+exports.getSubCategoryWiseProduct = async (req, res, next) => {
+  const subCatId = req.params.subId;
+  let cartCount = 0;
+  try{ 
+    const subCategoryData = await SubCategory.findByPk(subCatId, {include: Category});
+    const product = await Product.findAll({where: {subCategoryId: subCatId}});
+    const cat = await Category.findAll({ include: SubCategory });
+    if(req.session.isUserLoggedIn){
+      cartCount = Cart.findAndCountAll({where: {userId: req.session.userData.id}}).count;
+    }
+
+    res.render("user/sub-catalog", {
+      pageTitle: subCategoryData,
+      menuList: cat,
+      cartCount: cartCount,
+      product: product
+    });
+
+  }catch(err){
+    console.log(err);
+  }
+
 };
 
 // exports.getSingleProduct = (req, res, next) => {
@@ -320,3 +364,5 @@ exports.addToCart = (req, res, next) => {
       console.log(err);
     });
 };
+
+
