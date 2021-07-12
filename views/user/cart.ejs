@@ -20,7 +20,7 @@
       </div>
     </section> <!-- end page title -->
 
-
+    <% if(cartProd.length > 0){ %>
     <!-- Cart -->
     <section class="section-wrap cart pt-50 pb-40">
       <div class="container relative">
@@ -35,42 +35,45 @@
                 <th class="product-subtotal" colspan="2">Total</th>
               </tr>
             </thead>
-            <tbody>
-              <% cartProd.forEach(cartItem => { %> 
-                <tr class="cart_item">
-                  <td class="product-thumbnail">
-                    <a href="#">
-                      <img src="/<%= cartItem.product.smallFront %>" alt="">
-                    </a>
-                  </td>
-                  <td class="product-name">
-                    <a href="#"><%= cartItem.product.title %></a>
-                    <!-- <ul>
-                      <li>Size: XL</li>
-                      <li>Color: White</li>
-                    </ul> -->
-                  </td>
-                  <td class="product-price">
-                    <span class="amount">&#8377;<%= cartItem.product.salePrice %></span>
-                  </td>
-                  <td class="product-quantity">
-                    <div class="quantity buttons_added">
-                      <input type="button" value="-" class="minus">
-                      <input type="number" step="1" min="0" value="<%= cartItem.quantity %>" title="Qty" class="input-text qty text">
-                      <input type="button" value="+" class="plus">
-                    </div>
-                  </td>
-                  <td class="product-subtotal">
-                    <span class="amount">&#8377;<%= (cartItem.product.salePrice * cartItem.quantity) %></span>
-                  </td>
-                  <td class="product-remove">
-                    <a href="#" class="remove" title="Remove this item">
-                      <i class="ui-close"></i>
-                    </a>
-                  </td>
-                </tr>
-              <% }); %>
-            </tbody>
+            
+              <tbody>
+                  <% cartProd.forEach(cartItem => { %> 
+                    <tr class="cart_item">
+                      <td class="product-thumbnail">
+                        <a href="#">
+                          <img src="/<%= cartItem.product.smallFront %>" alt="">
+                        </a>
+                      </td>
+                      <td class="product-name">
+                        <a href="#"><%= cartItem.product.title %></a>
+                        <!-- <ul>
+                          <li>Size: XL</li>
+                          <li>Color: White</li>
+                        </ul> -->
+                      </td>
+                      <td class="product-price">
+                        <span class="amount">&#8377;<%= cartItem.product.salePrice %></span>
+                      </td>
+                      <td class="product-quantity">
+                        <div class="quantity buttons_added">
+                          <!-- <input type="button" value="-" class="minus"> -->
+                          <input type="number" step="1" min="0" readonly value="<%= cartItem.quantity %>" title="Qty" class="input-text qty text">
+                          <!-- <input type="button" value="+" class="plus"> -->
+                        </div>
+                      </td>
+                      <td class="product-subtotal">
+                        <span class="amount">&#8377;<%= (cartItem.product.salePrice * cartItem.quantity) %></span>
+                      </td>
+                      <td class="product-remove">
+                        <a href="/remove-product/<%= cartItem.id %>" class="remove" title="Remove this item">
+                          <i class="ui-close"></i>
+                        </a>
+                      </td>
+                    </tr>                  
+                  <% }); %>                
+              </tbody>         
+
+            
           </table>
         </div>
 
@@ -86,7 +89,7 @@
             <div class="actions">
               <input type="submit" name="update_cart" value="Update Cart" class="btn btn-md btn-dark btn-button">
               <div class="wc-proceed-to-checkout">
-                <a href="checkout.html" class="btn btn-md btn-color btn-button"><span>proceed to checkout</span></a>
+                <a href="/checkout" class="btn btn-md btn-color btn-button"><span>proceed to checkout</span></a>
               </div>
             </div>
           </div>
@@ -377,7 +380,7 @@
                   <tr class="cart-subtotal">
                     <th>Cart Subtotal</th>
                     <td>
-                      <span class="amount">$1490.00</span>
+                      <span class="amount">&#8377;<%= cartTotal %></span>
                     </td>
                   </tr>
                   <tr class="shipping">
@@ -403,6 +406,14 @@
         
       </div> <!-- end container -->
     </section> <!-- end cart -->
+
+    <% } else{ %>
+      <section class="section-wrap cart pt-50 pb-40">
+        <div class="container relative">
+          <h3>Your cart is empty. <a href="/" class="" style="color: darkblue;">Click here to shop</a></h3>
+        </div>
+      </section>
+    <% } %>
 
 
     <!-- Footer -->

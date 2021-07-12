@@ -15,7 +15,7 @@ router.get('/cart', userController.getCart);
 
 router.get('/product-details/:proId', userController.getProductDetails);
 
-router.get('/checkout');
+router.get('/checkout', isUserAuth, userController.getCheckout);
 
 
 router.get('/about-us', userController.getAboutUs);
@@ -37,6 +37,8 @@ router.post('/send-otp', [
 router.post('/verify-otp', userController.verifyOTP);
 
 router.post('/add-to-cart', isUserAuth, userController.addToCart);
+
+router.get('/remove-product/:cartId', isUserAuth, userController.removeFromCart);
 
 
 module.exports = router;

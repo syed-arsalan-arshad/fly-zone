@@ -15,7 +15,7 @@ exports.getLogin = (req, res, next) => {
         pageTitle: "Login",
         menuList: cat,
         errorMessage: "",
-        cartCount: req.session.userCart
+        cartCount: "",
       });
     })
     .catch((err) => {
@@ -35,7 +35,7 @@ exports.sendOTP = async (req, res, next) => {
         pageTitle: "Login",
         menuList: cat,
         errorMessage: errors.array()[0].msg,
-        cartCount: req.session.userCart
+        cartCount: "",
       });
     }
     res.render("user/login-otp", {
@@ -45,7 +45,7 @@ exports.sendOTP = async (req, res, next) => {
       mobileNo: mobile,
       errorMessage:
         "One Time Password(OTP) is sent to your mobile no " + mobile,
-      cartCount: req.session.userCart
+      cartCount: "",
     });
   } catch (err) {
     console.log(err);
@@ -66,7 +66,7 @@ exports.verifyOTP = async (req, res, next) => {
         otp: oldOTP,
         mobileNo: mobileNo,
         errorMessage: "OTP did not match",
-        cartCount: req.session.userCart
+        cartCount: "",
       });
     }
     let userCount = await User.findAndCountAll({ where: { mobile: mobileNo } });
@@ -77,12 +77,6 @@ exports.verifyOTP = async (req, res, next) => {
       user = user[0];
     }
     // console.log(user);
-    const cartCount = await Cart.findAndCountAll({
-      where: { userId: user.id },
-    });
-    // console.log(cartCount);
-    user.cartCount = cartCount.count;
-    req.session.userCart = cartCount.count;
     req.session.userData = user;
     req.session.isUserLoggedIn = true;
     if (req.session.url) {
@@ -106,11 +100,15 @@ exports.userProfile = async (req, res, next) => {
   const userData = req.session.userData;
 
   try {
+    const cartCount = await Cart.findAndCountAll({
+      where: { userId: req.session.userData.id },
+    });
     const menuList = await Category.findAll({ include: SubCategory });
     res.render("user/profile", {
       pageTitle: "User Profile",
       userData: userData,
       menuList: menuList,
+      cartCount: cartCount.count,
     });
   } catch (err) {
     console.log(err);
@@ -159,7 +157,10 @@ exports.getProductDetails = async (req, res, next) => {
   }
   let cartCount = 0;
   if (req.session.isUserLoggedIn) {
-    cartCount = req.session.userCart;
+    cartCount = await Cart.findAndCountAll({
+      where: { userId: req.session.userData.id },
+    });
+    cartCount = cartCount.count;
   }
   let isProdInCart = false;
   try {
@@ -192,7 +193,10 @@ exports.getIndex = async (req, res, next) => {
   try {
     let cartCount = 0;
     if (req.session.isUserLoggedIn) {
-      cartCount = req.session.userCart;
+      cartCount = await Cart.findAndCountAll({
+        where: { userId: req.session.userData.id },
+      });
+      cartCount = cartCount.count;
     }
     const cat = await Category.findAll({ include: SubCategory });
     const products = await Product.findAll();
@@ -207,10 +211,13 @@ exports.getIndex = async (req, res, next) => {
   }
 };
 
-exports.getAboutUs = (req, res, next) => {
+exports.getAboutUs = async (req, res, next) => {
   let cartCount = 0;
   if (req.session.isUserLoggedIn) {
-    cartCount = req.session.userCart;
+    cartCount = await Cart.findAndCountAll({
+      where: { userId: req.session.userData.id },
+    });
+    cartCount = cartCount.count;
   }
   Category.findAll({ include: SubCategory })
     .then((cat) => {
@@ -225,10 +232,13 @@ exports.getAboutUs = (req, res, next) => {
     });
 };
 
-exports.getContactUs = (req, res, next) => {
+exports.getContactUs = async (req, res, next) => {
   let cartCount = 0;
   if (req.session.isUserLoggedIn) {
-    cartCount = req.session.userCart;
+    cartCount = await Cart.findAndCountAll({
+      where: { userId: req.session.userData.id },
+    });
+    cartCount = cartCount.count;
   }
   Category.findAll({ include: SubCategory })
     .then((cat) => {
@@ -243,10 +253,13 @@ exports.getContactUs = (req, res, next) => {
     });
 };
 
-exports.getCatalog = (req, res, next) => {
+exports.getCatalog = async (req, res, next) => {
   let cartCount = 0;
   if (req.session.isUserLoggedIn) {
-    cartCount = req.session.userCart;
+    cartCount = await Cart.findAndCountAll({
+      where: { userId: req.session.userData.id },
+    });
+    cartCount = cartCount.count;
   }
   Category.findAll({ include: SubCategory })
     .then((cat) => {
@@ -264,49 +277,55 @@ exports.getCatalog = (req, res, next) => {
 exports.getCategoryWiseProduct = async (req, res, next) => {
   const catId = req.params.catId;
   let cartCount = 0;
-  try{ 
+  try {
     const categoryData = await Category.findByPk(catId);
-    const product = await Product.findAll({where: {categoryId: catId}});
+    const product = await Product.findAll({ where: { categoryId: catId } });
     const cat = await Category.findAll({ include: SubCategory });
-    if(req.session.isUserLoggedIn){
-      cartCount = Cart.findAndCountAll({where: {userId: req.session.userData.id}}).count;
+    if (req.session.isUserLoggedIn) {
+      cartCount = await Cart.findAndCountAll({
+        where: { userId: req.session.userData.id },
+      });
+      cartCount = cartCount.count;
     }
-
+    // console.log(cartCount);
     res.render("user/catalog", {
       pageTitle: categoryData.cat_name,
       menuList: cat,
       cartCount: cartCount,
-      product: product
+      product: product,
     });
-
-  }catch(err){
+  } catch (err) {
     console.log(err);
   }
-
 };
 
 exports.getSubCategoryWiseProduct = async (req, res, next) => {
   const subCatId = req.params.subId;
   let cartCount = 0;
-  try{ 
-    const subCategoryData = await SubCategory.findByPk(subCatId, {include: Category});
-    const product = await Product.findAll({where: {subCategoryId: subCatId}});
+  try {
+    const subCategoryData = await SubCategory.findByPk(subCatId, {
+      include: Category,
+    });
+    const product = await Product.findAll({
+      where: { subCategoryId: subCatId },
+    });
     const cat = await Category.findAll({ include: SubCategory });
-    if(req.session.isUserLoggedIn){
-      cartCount = Cart.findAndCountAll({where: {userId: req.session.userData.id}}).count;
+    if (req.session.isUserLoggedIn) {
+      cartCount = await Cart.findAndCountAll({
+        where: { userId: req.session.userData.id },
+      });
+      cartCount = cartCount.count;
     }
 
     res.render("user/sub-catalog", {
       pageTitle: subCategoryData,
       menuList: cat,
       cartCount: cartCount,
-      product: product
+      product: product,
     });
-
-  }catch(err){
+  } catch (err) {
     console.log(err);
   }
-
 };
 
 // exports.getSingleProduct = (req, res, next) => {
@@ -323,23 +342,42 @@ exports.getSubCategoryWiseProduct = async (req, res, next) => {
 // };
 
 exports.getCart = async (req, res, next) => {
-  let cartCount = 0;
-  if (req.session.isUserLoggedIn) {
-    cartCount = req.session.userCart;
-  }
   try {
     const cat = await Category.findAll({ include: SubCategory });
-    const cartProd = await Cart.findAll({include: Product}, {where: {userId: req.session.userData.is}});
-    //console.log(cartProd);
+    // console.log(req.session.userData.id);
+    const cartProd = await Cart.findAll({
+      where: { userId: req.session.userData.id },
+      include: Product,
+    });
+    const cartCount = await Cart.findAndCountAll({
+      where: { userId: req.session.userData.id },
+    });
+    // console.log(cartProd);
+    let cartTotal = 0;
+    cartProd.forEach((cartItem) => {
+      cartTotal += cartItem.quantity * cartItem.product.salePrice;
+    });
     res.render("user/cart", {
       pageTitle: "Cart | Fly-Zone",
       menuList: cat,
-      cartCount: cartCount,
-      cartProd: cartProd
+      cartCount: cartCount.count,
+      cartProd: cartProd,
+      cartTotal: cartTotal,
     });
   } catch (err) {
     console.log(err);
   }
+};
+
+exports.removeFromCart = (req, res, next) => {
+  const cartId = req.params.cartId;
+  Cart.destroy({ where: { id: cartId } })
+    .then(() => {
+      res.redirect("/cart");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 exports.addToCart = (req, res, next) => {
@@ -351,18 +389,26 @@ exports.addToCart = (req, res, next) => {
     quantity: quantity,
   })
     .then((cart) => {
-      return Cart.findAndCountAll({
-        where: { userId: req.session.userData.id },
-      });
-    })
-    .then((cartCount) => {
-      req.session.userCart = cartCount.count;
-      console.log(req.session.userCart);
-      res.redirect('/cart');
+      res.redirect("/cart");
     })
     .catch((err) => {
       console.log(err);
     });
 };
 
-
+exports.getCheckout = async (req, res, next) => {
+  try {
+    let cartCount = await Cart.findAndCountAll({
+      where: { userId: req.session.userData.id },
+    });
+    cartCount = cartCount.count;
+    const cat = await Category.findAll({ include: SubCategory });
+    res.render("user/checkout", {
+      pageTitle: "CheckOut | Fly-Zone",
+      menuList: cat,
+      cartCount: cartCount
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
