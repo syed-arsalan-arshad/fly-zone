@@ -21,6 +21,10 @@ const { copyFileSync } = require("fs");
 const ProductLabel = require("./models/productLabel");
 const Cart = require("./models/cart");
 const User = require("./models/user");
+const UserAddress = require("./models/user-address");
+const { match } = require("assert");
+const Orders = require("./models/orders");
+const OrderList = require("./models/order-list");
 
 const store = new SessionStore({
   db: sequelize,
@@ -112,9 +116,17 @@ Cart.belongsTo(Product, { constraint: true, onDelete: "CASCADE" });
 Product.hasMany(Cart, { constraint: true, onDelete: "CASCADE" });
 Cart.belongsTo(User, { constraint: true, onDelete: "CASCADE" });
 User.hasMany(Cart, { constraint: true, onDelete: "CASCADE" });
+UserAddress.belongsTo(User, { constraint: true, onDelete: "CASCADE" });
+User.hasMany(UserAddress, { constraint: true, onDelete: "CASCADE" });
+Orders.belongsTo(User, { constraint: true, onDelete: "CASCADE" });
+Orders.belongsTo(UserAddress, { constraint: true, onDelete: "CASCADE" });
+OrderList.belongsTo(Orders, { constraint: true, onDelete: "CASCADE" });
+OrderList.belongsTo(Product, { constraint: true, onDelete: "CASCADE" });
+Orders.hasMany(OrderList, { constraint: true, onDelete: "CASCADE" });
+Product.hasMany(OrderList, { constraint: true, onDelete: "CASCADE" });
 //Instatiate Server
 sequelize
-  // .sync({ force: true })
+  // .sync({ force: true})
   sequelize.sync()
   .then((result) => {
     //console.log(result);
