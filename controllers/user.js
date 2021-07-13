@@ -354,16 +354,23 @@ exports.getCart = async (req, res, next) => {
       where: { userId: req.session.userData.id },
     });
     // console.log(cartProd);
-    let cartTotal = 0;
+    let cartSubTotal = 0;
     cartProd.forEach((cartItem) => {
-      cartTotal += cartItem.quantity * cartItem.product.salePrice;
+      cartSubTotal += cartItem.quantity * cartItem.product.salePrice;
     });
+    let shipping = 0;
+    if(cartSubTotal < 999){
+      shipping = 99;
+    }
+    let cartTotal = cartSubTotal + shipping;
     res.render("user/cart", {
       pageTitle: "Cart | Fly-Zone",
       menuList: cat,
       cartCount: cartCount.count,
       cartProd: cartProd,
       cartTotal: cartTotal,
+      cartSubTotal: cartSubTotal,
+      shipping: shipping
     });
   } catch (err) {
     console.log(err);
@@ -405,11 +412,25 @@ exports.getCheckout = async (req, res, next) => {
     cartCount = cartCount.count;
     const cat = await Category.findAll({ include: SubCategory });
     const userAddress = await UserAddress.findAll({where: {userId: req.session.userData.id}});
+    const cartProd = await Cart.findAll({where: {userId: req.session.userData.id}, include: Product});
+    let cartSubTotal = 0;
+    cartProd.forEach((cartItem) => {
+      cartSubTotal += cartItem.quantity * cartItem.product.salePrice;
+    });
+    let shipping = 0;
+    if(cartSubTotal < 999){
+      shipping = 99;
+    }
+    let cartTotal = cartSubTotal + shipping;
     res.render("user/checkout", {
       pageTitle: "CheckOut | Fly-Zone",
       menuList: cat,
       cartCount: cartCount,
-      userAddress: userAddress
+      userAddress: userAddress,
+      cartProd: cartProd,
+      cartTotal: cartTotal,
+      shipping: shipping,
+      cartSubTotal: cartSubTotal
     });
   } catch (err) {
     console.log(err);

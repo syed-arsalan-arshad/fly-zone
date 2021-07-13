@@ -171,7 +171,7 @@ exports.postAddCategory = (req, res, next) => {
   })
     .then((result) => {
       // console.log(result);
-      res.redirect("/admin/view-category");
+      res.redirect("/admin/add-category");
     })
     .catch((err) => {
       console.log(err);
@@ -214,7 +214,7 @@ exports.postAddSubCategory = async (req, res, next) => {
   })
     .then((result) => {
       // console.log(result);
-      res.redirect("/admin/view-sub-category");
+      res.redirect("/admin/add-sub-category");
     })
     .catch((err) => {
       console.log(err);

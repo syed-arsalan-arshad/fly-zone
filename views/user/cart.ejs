@@ -97,7 +97,7 @@
 
         <div class="row justify-content-between">
           <div class="col-lg-6 shipping-calculator-form">
-            <h2 class="uppercase mb-30">Calculate Shipping</h2>
+            <!-- <h2 class="uppercase mb-30">Calculate Shipping</h2>
             <p class="form-row form-row-wide">
               <select name="calc_shipping_country" id="calc_shipping_country" class="country_to_state" rel="calc_shipping_state">
                 <option>Select a country…</option>
@@ -368,8 +368,9 @@
 
             <p>
               <input type="submit" name="calc_shipping" value="Update Totals" class="btn btn-md btn-dark btn-button">
-            </p>                
-          </div> <!-- end col shipping calculator -->
+            </p>                 -->
+          </div> 
+          <!-- end col shipping calculator -->
 
           <div class="col-lg-4">
             <div class="cart_totals">
@@ -380,19 +381,19 @@
                   <tr class="cart-subtotal">
                     <th>Cart Subtotal</th>
                     <td>
-                      <span class="amount">&#8377;<%= cartTotal %></span>
+                      <span class="amount">&#8377;<%= cartSubTotal %></span>
                     </td>
                   </tr>
                   <tr class="shipping">
                     <th>Shipping</th>
                     <td>
-                      <span>Free Shipping</span>
+                      <span>&#8377;<%= shipping %></span>
                     </td>
                   </tr>
                   <tr class="order-total">
                     <th>Order Total</th>
                     <td>
-                      <strong><span class="amount">$1490.00</span></strong>
+                      <strong><span class="amount">&#8377;<%= cartTotal %></span></strong>
                     </td>
                   </tr>
                 </tbody>

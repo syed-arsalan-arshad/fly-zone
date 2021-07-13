@@ -105,34 +105,30 @@
                   <h2 class="uppercase">Your Order</h2>
                   <table class="table shop_table ecommerce-checkout-review-order-table">
                     <tbody>
-                      <tr>
-                        <th>Business Suit<span class="count"> x 1</span></th>
-                        <td>
-                          <span class="amount">$599.00</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th>California Dress<span class="count"> x 1</span></th>
-                        <td>
-                          <span class="amount">$1299.00</span>
-                        </td>
-                      </tr>
+                      <% cartProd.forEach(cartItem => { %>
+                        <tr>
+                          <th><%= cartItem.product.title %><span class="count"> x <%= cartItem.quantity %></span></th>
+                          <td>
+                            <span class="amount">&#8377;<%= cartItem.product.salePrice * cartItem.quantity %></span>
+                          </td>
+                        </tr>
+                      <% }); %>
                       <tr class="cart-subtotal">
                         <th>Cart Subtotal</th>
                         <td>
-                          <span class="amount">$1799.00</span>
+                          <span class="amount">&#8377;<%= cartSubTotal %></span>
                         </td>
                       </tr>
                       <tr class="shipping">
                         <th>Shipping</th>
                         <td>
-                          <span>Free Shipping</span>
+                          <span>&#8377;<%= shipping %></span>
                         </td>
                       </tr>
                       <tr class="order-total">
                         <th><strong>Total Amount</strong></th>
                         <td>
-                          <strong><span class="amount">$1799.00</span></strong>
+                          <strong><span class="amount">&#8377;<%= cartTotal %></span></strong>
                         </td>
                       </tr>
                     </tbody>
