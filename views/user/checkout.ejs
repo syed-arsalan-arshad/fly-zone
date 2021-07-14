@@ -57,6 +57,7 @@
  }
 
             </style>
+            
             <form name="checkout" class="checkout ecommerce-checkout row">
 
               <div class="col-lg-7" id="customer_details">
@@ -165,12 +166,17 @@
 
                     </ul>
                     <div class="form-row place-order">
+                      <% if(userAddress.length >= 1) { %>
                       <input type="submit" name="ecommerce_checkout_place_order" class="btn btn-lg btn-color btn-button" id="place_order" value="Place order">
+                      <% } else { %>
+                        <input type="button" name="ecommerce_checkout_place_order" class="btn btn-lg btn-color btn-button" title="Add Address First" disabled style="cursor: not-allowed;" id="place_order" value="Place order">
+                        <% } %>
                     </div>
                   </div>
                 </div>
               </div> <!-- end order review -->
             </form>
+            
 
           </div> <!-- end ecommerce -->
 
