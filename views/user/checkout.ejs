@@ -41,7 +41,7 @@
             </div>
             <style>
               .bg-selected {
-  background: #c4da63 ;
+  background: #9cb7e9 ;
 }
 .bg-unselected {
   background: #F0E5E1 ;
@@ -64,19 +64,27 @@
 }
 
 .card-input-element:checked + .card-input {
-     box-shadow: 0 0 1px 1px #2ecc71;
+     box-shadow: 0 0 1px 1px #000a05;
+     background: #dcdcdc ;
+
  }
 
             </style>
             
-            <form name="checkout" class="checkout ecommerce-checkout row">
+            <form name="checkout" action="/place-order" method="POST" class="checkout ecommerce-checkout row">
 
               <div class="col-lg-7" id="customer_details">
                 <% if(userAddress.length >=1) { %>
-                  <% userAddress.forEach(userAdd => { %> 
-                    <div class="bg-card">
+                  <% 
+                  i = 1;
+                  userAddress.forEach(userAdd => { %> 
+                    <div>
                       <label>
-                        <input type="radio" name="deliveryAddress" class="card-input-element" checked />
+                        <% if(i == 1){ %>
+                          <input type="radio" value="<%= userAdd.id %>" name="addressId" class="card-input-element" checked />
+                        <% } else{ %> 
+                          <input type="radio" name="deliveryAddress" class="card-input-element" />
+                        <% } %>
               
                           <div class="panel panel-default card-input">
                             <div class="panel-heading"><%= userAdd.name %></div>
@@ -88,7 +96,7 @@
                           </div>
                       </label>
                     </div>
-                <% }) %>
+                <% i++; }) %>
                 <% } %>
               </div> 
               <!-- end col -->

@@ -7,6 +7,9 @@ const Seller = require("../models/seller");
 const ProductLabel = require("../models/productLabel");
 const Cart = require("../models/cart");
 const UserAddress = require("../models/user-address");
+const Orders = require("../models/orders");
+const OrderList = require("../models/order-list");
+const orderid = require("order-id")("mysecret");
 
 exports.getLogin = (req, res, next) => {
   Category.findAll({ include: SubCategory })
@@ -464,7 +467,7 @@ exports.addNewDeliveryAddress = (req, res, next) => {
     pincode: req.body.pincode,
     district: req.body.district,
     state: req.body.state,
-    userId: req.session.userData.id
+    userId: req.session.userData.id,
   };
   UserAddress.create(userAddress)
     .then((userAdd) => {
@@ -475,4 +478,37 @@ exports.addNewDeliveryAddress = (req, res, next) => {
     .catch((err) => {
       console.log(err);
     });
+};
+
+exports.placeOrder = async (req, res, next) => {
+  const addressId = req.body.addressId;
+  const cartProd = await Cart.findAll({
+    where: { userId: req.session.userData.id },
+    include: Product
+  });
+  let cartSubTotal = 0;
+  cartProd.forEach((cartItem) => {
+    cartSubTotal += cartItem.quantity * cartItem.product.salePrice;
+  });
+  let shipping = 0;
+  if (cartSubTotal < 999) {
+    shipping = 99;
+  }
+  let cartTotal = cartSubTotal + shipping;
+  const order = await Orders.create({
+    orderNo: "ORD-" + orderid.generate(),
+    orderValue: cartTotal,
+    userId: req.session.userData.id,
+    userAddressId: addressId
+  });
+  if(order){
+    for (const cartItem of cartProd ) {
+      await OrderList.create({
+        quantity: cartItem.quantity,
+        orderId: order.id,
+        productId: cartItem.product.id
+      });
+    }
+    res.redirect('/');
+  }
 };
