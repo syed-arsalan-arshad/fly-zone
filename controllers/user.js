@@ -359,7 +359,7 @@ exports.getCart = async (req, res, next) => {
       cartSubTotal += cartItem.quantity * cartItem.product.salePrice;
     });
     let shipping = 0;
-    if(cartSubTotal < 999){
+    if (cartSubTotal < 999) {
       shipping = 99;
     }
     let cartTotal = cartSubTotal + shipping;
@@ -370,7 +370,7 @@ exports.getCart = async (req, res, next) => {
       cartProd: cartProd,
       cartTotal: cartTotal,
       cartSubTotal: cartSubTotal,
-      shipping: shipping
+      shipping: shipping,
     });
   } catch (err) {
     console.log(err);
@@ -406,19 +406,26 @@ exports.addToCart = (req, res, next) => {
 
 exports.getCheckout = async (req, res, next) => {
   try {
+    let message = req.flash("message");
+    // console.log(message);
     let cartCount = await Cart.findAndCountAll({
       where: { userId: req.session.userData.id },
     });
     cartCount = cartCount.count;
     const cat = await Category.findAll({ include: SubCategory });
-    const userAddress = await UserAddress.findAll({where: {userId: req.session.userData.id}});
-    const cartProd = await Cart.findAll({where: {userId: req.session.userData.id}, include: Product});
+    const userAddress = await UserAddress.findAll({
+      where: { userId: req.session.userData.id },
+    });
+    const cartProd = await Cart.findAll({
+      where: { userId: req.session.userData.id },
+      include: Product,
+    });
     let cartSubTotal = 0;
     cartProd.forEach((cartItem) => {
       cartSubTotal += cartItem.quantity * cartItem.product.salePrice;
     });
     let shipping = 0;
-    if(cartSubTotal < 999){
+    if (cartSubTotal < 999) {
       shipping = 99;
     }
     let cartTotal = cartSubTotal + shipping;
@@ -430,9 +437,42 @@ exports.getCheckout = async (req, res, next) => {
       cartProd: cartProd,
       cartTotal: cartTotal,
       shipping: shipping,
-      cartSubTotal: cartSubTotal
+      cartSubTotal: cartSubTotal,
+      errorMessage: message,
     });
   } catch (err) {
     console.log(err);
   }
+};
+
+exports.addNewAddressModel = (req, res, next) => {
+  res.render("user/add-new-address-model");
+};
+
+exports.addNewDeliveryAddress = (req, res, next) => {
+  const errors = validationResult(req);
+  let message;
+  if (!errors.isEmpty()) {
+    message = errors.array()[0].msg;
+    req.flash("message", "Error: " + message);
+    return res.redirect("/checkout");
+  }
+  const userAddress = {
+    name: req.body.name,
+    mobile: req.body.mobile,
+    address: req.body.addressLine,
+    pincode: req.body.pincode,
+    district: req.body.district,
+    state: req.body.state,
+    userId: req.session.userData.id
+  };
+  UserAddress.create(userAddress)
+    .then((userAdd) => {
+      if (userAdd) {
+        res.redirect("/checkout");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };

@@ -30,11 +30,22 @@
             <div class="row mb-30">
               <div class="col-md-8">
                 <p class="ecommerce-info">
-                  <a href="#" id="top-bar__sign-in" class="showlogin">Add New Address</a>
+                  <a href="/add-new-address-model" id="top-bar__sign-in" class="showlogin">Add New Address</a>
+                </p>
+                <p>
+                  <% if(errorMessage){ %> 
+                    <%= errorMessage %>
+                  <% } %>
                 </p>
               </div>
             </div>
             <style>
+              .bg-selected {
+  background: #c4da63 ;
+}
+.bg-unselected {
+  background: #F0E5E1 ;
+}
               label {
     width: 100%;
 }
@@ -44,8 +55,8 @@
 }
 
 .card-input {
-    margin: 10px;
-    padding: 00px;
+    margin: 0px;
+    padding: 15px;
 }
 
 .card-input:hover {
@@ -61,42 +72,24 @@
             <form name="checkout" class="checkout ecommerce-checkout row">
 
               <div class="col-lg-7" id="customer_details">
-                <div>
-                  <label>
-                    <input type="radio" name="product" class="card-input-element" />
-          
-                      <div class="panel panel-default card-input">
-                        <div class="panel-heading">Product B</div>
-                        <div class="panel-body">
-                          Product specific content
-                        </div>
-                      </div>
-                  </label>
-                </div>
-                <div>
-                  <label>
-                    <input type="radio" name="product" class="card-input-element" />
-          
-                      <div class="panel panel-default card-input">
-                        <div class="panel-heading">Product B</div>
-                        <div class="panel-body">
-                          Product specific content
-                        </div>
-                      </div>
-                  </label>
-                </div>
-                <div>
-                  <label>
-                    <input type="radio" name="product" class="card-input-element" checked />
-          
-                      <div class="panel panel-default card-input">
-                        <div class="panel-heading">Product B</div>
-                        <div class="panel-body">
-                          Product specific content
-                        </div>
-                      </div>
-                  </label>
-                </div>
+                <% if(userAddress.length >=1) { %>
+                  <% userAddress.forEach(userAdd => { %> 
+                    <div class="bg-card">
+                      <label>
+                        <input type="radio" name="deliveryAddress" class="card-input-element" checked />
+              
+                          <div class="panel panel-default card-input">
+                            <div class="panel-heading"><%= userAdd.name %></div>
+                            <div class="panel-body">
+                              <p class="m-0"><%= userAdd.address + ', ' + userAdd.district + ', ' + userAdd.pincode  %></p>
+                              <p class="m-0"><%= userAdd.state %></p>
+                              <p class="m-0"><%= userAdd.mobile %></p>
+                            </div>
+                          </div>
+                      </label>
+                    </div>
+                <% }) %>
+                <% } %>
               </div> 
               <!-- end col -->
 

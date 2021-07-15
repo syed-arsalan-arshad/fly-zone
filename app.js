@@ -11,6 +11,7 @@ const userRoutes = require('./routes/user');
 const adminRoutes = require("./routes/admin");
 const sellerRoutes = require("./routes/seller");
 const errorController = require("./controllers/error");
+const flash = require('connect-flash');
 
 const Category = require("./models/category");
 const Product = require("./models/product");
@@ -99,6 +100,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(flash());
 //Registering Routes In Middleware
 app.use(userRoutes);
 app.use("/admin", adminRoutes);
