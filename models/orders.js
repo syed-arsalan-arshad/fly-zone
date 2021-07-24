@@ -15,6 +15,9 @@ const Orders = sequelize.define('orders', {
         type: Sequelize.STRING,
         allowNull: false
     },
+    shippingValue: {
+        type: Sequelize.INTEGER
+    },
     paymentMode: {
         type: Sequelize.INTEGER,
         allowNull: false

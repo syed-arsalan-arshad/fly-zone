@@ -5,6 +5,8 @@ const SubCategory = require("../models/sub-category");
 const Product = require("../models/product");
 const Label = require("../models/productLabel");
 const fs = require("fs");
+const OrderList = require("../models/order-list");
+const Orders = require("../models/orders");
 exports.getIndex = async (req, res, next) => {
   const productCount = await Product.findAndCountAll({
     where: { sellerId: req.session.sellerData.id },
@@ -459,4 +461,14 @@ exports.postAddLabels = async (req, res, next) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+exports.orderList = async (req, res, next) => {
+  const orderDetails = await OrderList.findAll({include: [{model: Product, where: {sellerId: req.session.sellerData.id}}, Orders],
+  });
+  console.log(orderDetails);
+  res.render('seller/order-list',{
+    path: "",
+    sidePath: "/order-list",
+  })
 };

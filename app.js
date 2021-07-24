@@ -123,9 +123,7 @@ User.hasMany(UserAddress, { constraint: true, onDelete: "CASCADE" });
 Orders.belongsTo(User, { constraint: true, onDelete: "CASCADE" });
 Orders.belongsTo(UserAddress, { constraint: true, onDelete: "CASCADE" });
 OrderList.belongsTo(Orders, { constraint: true, onDelete: "CASCADE" });
-OrderList.belongsTo(Product, { constraint: true, onDelete: "CASCADE" });
 Orders.hasMany(OrderList, { constraint: true, onDelete: "CASCADE" });
-Product.hasMany(OrderList, { constraint: true, onDelete: "CASCADE" });
 //Instatiate Server
 sequelize
   // .sync({ force: true})

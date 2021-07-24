@@ -1,0 +1,31 @@
+<%- include('includes/header.ejs') %>
+<%- include('includes/navBar.ejs', {path: path}) %>
+
+<div class="container-fluid" style="padding: 0%; overflow-x: hidden;">
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-12">
+            <%- include('includes/leftSideBar.ejs', {path: sidePath}) %>
+        </div>
+        <div class="col-lg-9 col-md-8 col-sm-12">
+            <div class="card text-info bg-light mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Order List</h5>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Order No</th>
+                            <th>Product Name</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('includes/footer.ejs') %>

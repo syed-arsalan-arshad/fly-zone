@@ -137,4 +137,6 @@ router.post(
   sellerController.postAddLabels
 );
 
+router.get('/order-list', sellerController.orderList);
+
 module.exports = router;
