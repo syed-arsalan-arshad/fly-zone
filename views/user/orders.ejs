@@ -1,0 +1,138 @@
+<!-- Links and Head -->
+<%- include('includes/header.ejs', {pageTitle: pageTitle}) %>
+  <!-- Preloader -->
+  <%- include('includes/pre-loader.ejs') %>
+  
+
+  <!-- Mobile Sidenav -->    
+  <%- include('includes/mobile-side-nav.ejs') %>
+  <!-- end mobile sidenav -->
+
+
+  <main class="main oh" id="main">
+
+    <!-- Navigation -->
+    <%- include('includes/top-navbar.ejs', {menuList: menuList, cartCount: cartCount}) %>
+    <!-- end navigation -->
+
+    <section class="section-wrap cart pt-50 pb-40">
+      <div class="container relative">
+        <div class="row">
+          <div class="col-12">
+            <h4 style="background-color: #dcdcdc;padding: 2px;">
+              <div class="row">
+                <div class="col-lg-3 col-6">
+                  OrderNo
+                </div>
+                <div class="col-lg-3 col-6">OrderValue</div>
+                <div class="col-lg-3 col-6">OrderDate</div>
+                <div class="col-lg-3 col-6">
+                  Action
+                </div>
+              </div>
+            </h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div id="accordion">
+              <% orderDetails.forEach(order => { %> 
+                <div class="card">
+                  <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                      <div class="row">
+                        <div class="col-lg-3 col-6">
+                          <%= order.orderNo %>
+                        </div>
+                        <div class="col-lg-3 col-6"><%= order.orderValue %>(Including Shipping Charges)</div>
+                        <div class="col-lg-3 col-6"><%= order.createdAt %></div>
+                        <div class="col-lg-3 col-6">
+                          <button class="btn btn-link" style="background-color: rgba(255, 100, 10, 0.952);"  data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            See Details
+                          </button>
+                        </div>
+                      </div>
+                      
+                    </h5>
+                  </div>
+              
+                  <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th class="product-name">Product</th>
+                              <th class="product-price">Price</th>
+                              <th class="product-quantity">Quantity</th>
+                              <th class="product-subtotal">Total</th>
+                              <th>Status</th>
+                              <th>Invoice</th>
+                            </tr>
+                          </thead>
+                          
+                          <tbody>
+                            <% order.orderLists.forEach(orderList => { %> 
+                              <tr class="cart_item">
+                                <!-- <td class="product-thumbnail">
+                                  <a href="#">
+                                    <img src="" alt="">
+                                  </a>
+                                </td> -->
+                                <td class="product-name">
+                                  <a href="#"><%= orderList.product.title %></a>
+                                  <!-- <ul>
+                                    <li>Size: XL</li>
+                                    <li>Color: White</li>
+                                  </ul> -->
+                                </td>
+                                <td class="product-price">
+                                  <span class="amount">&#8377;<%= orderList.product.salePrice %></span>
+                                </td>
+                                <td class="product-quantity">
+                                  <div class="quantity buttons_added">
+                                    <!-- <input type="button" value="-" class="minus"> -->
+                                    <input type="number" step="1" min="0" readonly value="1" title="Qty" class="input-text qty text">
+                                    <!-- <input type="button" value="+" class="plus"> -->
+                                  </div>
+                                </td>
+                                <td class="product-subtotal">
+                                  <span class="amount">&#8377;<%= (orderList.product.salePrice * orderList.quantity) %></span>
+                                </td>
+                                <td>
+                                  <span>1</span>
+                                </td>
+                                <td>
+                                  <a href="">Get Invoice</a>
+                                </td>
+                              </tr> 
+                            <% }) %>  
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% }) %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+       
+
+
+    <!-- Footer -->
+    <%- include('includes/footer-nav.ejs') %>
+    <!-- end footer -->
+
+    <div id="back-to-top">
+      <a href="#top" aria-label="Go to top"><i class="ui-arrow-up"></i></a>
+    </div>
+
+  </main> <!-- end main-wrapper -->
+
+
+  
+  <!-- jQuery Scripts -->
+<%- include('includes/footer-script.ejs') %>

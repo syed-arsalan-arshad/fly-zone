@@ -14,6 +14,10 @@ const Orders = sequelize.define('orders', {
     orderValue: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    paymentMode: {
+        type: Sequelize.INTEGER,
+        allowNull: false
     }
 });
 module.exports = Orders;

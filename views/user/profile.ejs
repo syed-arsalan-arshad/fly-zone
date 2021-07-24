@@ -41,13 +41,17 @@
                                 </div>
                                 <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Latest Order</h6>
                                 <div class="row">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <p class="m-b-10 f-w-600">Orders Id</p>
-                                        <h6 class="text-muted f-w-400">Sam Disuja</h6>
+                                        <h6 class="text-muted f-w-400"><%= latestOrder.orderNo %></h6>
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <p class="m-b-10 f-w-600">Order Date</p>
-                                        <h6 class="text-muted f-w-400">Dinoter husainm</h6>
+                                        <h6 class="text-muted f-w-400"><%= latestOrder.createdAt %></h6>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <p class="m-b-10 f-w-600">Order Value</p>
+                                        <h6 class="text-muted f-w-400"><%= latestOrder.orderValue %></h6>
                                     </div>
                                 </div>
                                 <div class="bg-c-lite-green text-center m-b-20 m-t-40 p-2">

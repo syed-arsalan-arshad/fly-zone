@@ -70,6 +70,8 @@ router.post(
   userController.addNewDeliveryAddress
 );
 
+router.get('/order-list', userController.userOrders);
+
 router.post('/place-order', userController.placeOrder);
 
 module.exports = router;

@@ -83,7 +83,7 @@
                         <% if(i == 1){ %>
                           <input type="radio" value="<%= userAdd.id %>" name="addressId" class="card-input-element" checked />
                         <% } else{ %> 
-                          <input type="radio" name="deliveryAddress" class="card-input-element" />
+                          <input type="radio" name="addressId" class="card-input-element" />
                         <% } %>
               
                           <div class="panel panel-default card-input">
@@ -140,30 +140,33 @@
                     <h2 class="uppercase">Payment Method</h2>
                     <ul class="payment_methods methods">
 
-                      <li class="payment_method_bacs">
-                        <input id="payment_method_bacs" type="radio" class="input-radio" name="payment_method" value="bacs" checked="checked">
-                        <label for="payment_method_bacs">Direct Bank Transfer</label>
-                        <div class="payment_box payment_method_bacs">
-                          <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order wont be shipped until the funds have cleared in our account.</p>
-                        </div>
-                      </li>
 
                       <li class="payment_method_cheque">
-                        <input id="payment_method_cheque" type="radio" class="input-radio" name="payment_method" value="cheque">
-                        <label for="payment_method_cheque">Cheque payment</label>
+                        <input id="payment_method_cheque" type="radio" class="input-radio" name="payment_method" value="0" checked="checked">
+                        <label for="payment_method_cheque">Online Payment</label>
                         <div class="payment_box payment_method_cheque">
-                          <p>Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
+                          <p>Pay Online. Cashless Payment is better for shopping.</p>
                         </div>
                       </li>
 
-                      <li class="payment_method_paypal">
+                      <li class="payment_method_bacs">
+                        <input id="payment_method_bacs" type="radio" class="input-radio" name="payment_method" value="1" >
+                        <label for="payment_method_bacs">Cash On Delivery (COD)</label>
+                        <div class="payment_box payment_method_bacs">
+                          <p>Make your payment when your product is in your hand.</p>
+                        </div>
+                      </li>
+
+                      
+
+                      <!-- <li class="payment_method_paypal">
                         <input id="payment_method_paypal" type="radio" class="input-radio" name="payment_method" value="paypal">
                         <label for="payment_method_paypal">Paypal</label>
                         <img src="img/shop/paypal.png" alt="">
                         <div class="payment_box payment_method_paypal">
                           <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal account.</p>
                         </div>
-                      </li>
+                      </li> -->
 
                     </ul>
                     <div class="form-row place-order">

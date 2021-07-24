@@ -107,12 +107,17 @@ exports.userProfile = async (req, res, next) => {
     const cartCount = await Cart.findAndCountAll({
       where: { userId: req.session.userData.id },
     });
+    const latestOrder = await Orders.findAll({
+      limit: 1,
+      order: [["id", "DESC"]],
+    });
     const menuList = await Category.findAll({ include: SubCategory });
     res.render("user/profile", {
       pageTitle: "User Profile",
       userData: userData,
       menuList: menuList,
       cartCount: cartCount.count,
+      latestOrder: latestOrder[0],
     });
   } catch (err) {
     console.log(err);
@@ -482,9 +487,10 @@ exports.addNewDeliveryAddress = (req, res, next) => {
 
 exports.placeOrder = async (req, res, next) => {
   const addressId = req.body.addressId;
+  const paymentMode = req.body.payment_method;
   const cartProd = await Cart.findAll({
     where: { userId: req.session.userData.id },
-    include: Product
+    include: Product,
   });
   let cartSubTotal = 0;
   cartProd.forEach((cartItem) => {
@@ -499,16 +505,37 @@ exports.placeOrder = async (req, res, next) => {
     orderNo: "ORD-" + orderid.generate(),
     orderValue: cartTotal,
     userId: req.session.userData.id,
-    userAddressId: addressId
+    userAddressId: addressId,
+    paymentMode: paymentMode,
   });
-  if(order){
-    for (const cartItem of cartProd ) {
+  if (order) {
+    for (const cartItem of cartProd) {
       await OrderList.create({
         quantity: cartItem.quantity,
         orderId: order.id,
-        productId: cartItem.product.id
+        productId: cartItem.product.id,
       });
     }
-    res.redirect('/');
+    await Cart.destroy({ where: { userId: req.session.userData.id } });
+    res.redirect("/");
   }
+};
+
+exports.userOrders = async (req, res, next) => {
+  const orderDetails = await Orders.findAll({where: {userId: req.session.userData.id},
+    include: [{ model: OrderList, include: Product }],
+  });
+  // console.log(orderDetails[0].orderLists);
+
+  let cartCount = await Cart.findAndCountAll({
+    where: { userId: req.session.userData.id },
+  });
+  cartCount = cartCount.count;
+  const cat = await Category.findAll({ include: SubCategory });
+  res.render("user/orders", {
+    pageTitle: "Fly-Zone | Orders",
+    cartCount: cartCount,
+    menuList: cat,
+    orderDetails: orderDetails
+  });
 };
