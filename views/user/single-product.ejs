@@ -87,17 +87,20 @@
                     <option value="xl">XL</option>
                   </select>
                 </div> -->
-                <div class="quantity buttons_added">
-                  <label class="d-block">Quantity</label>
-                  <input type="button" value="-" class="minus">
-                  <input type="number" name="quantity" step="1" min="0" value="1" title="Qty" class="input-text qty text">
-                  <input type="button" value="+" class="plus">
-                </div>
+                <% if(product.stock > 0){ %> 
+                  <div class="quantity buttons_added">
+                    <label class="d-block">Quantity</label>
+                    <input type="button" value="-" class="minus">
+                    <input type="number" name="quantity" step="1" min="0" max="<%= product.stock %>" value="1" title="Qty" class="input-text qty text">
+                    <input type="button" value="+" class="plus">
+                  </div>  
+                <% } %>
               </div>            
               <input type="hidden" value="<%= product.id %>" name="proId">
               <div class="row row-10 product-single__actions clearfix">
                 <div class="col">
                   <% if(isUserLoggedIn){ %>
+                    <% if(product.stock > 0){ %>
                     <% if(isProdInCart){ %>
                       <a href="/cart" class="btn btn-lg btn-color product-single__add-to-cart">
                         <i class="ui-bag"></i>
@@ -108,6 +111,12 @@
                       <i class="ui-bag"></i>
                       <span>Add To Cart</span>
                     </button>
+                    <% } %>
+                    <% } else { %> 
+                      <button type="button" disabled class="btn btn-lg " style="cursor: not-allowed;background-color: #dcdcdc; color: black;">
+                        <i class="ui-bag"></i>
+                        <span>Out Of Stock</span>
+                      </button>
                     <% } %>
                   <% }else { %>
                     <a href="/login" class="btn btn-lg btn-color product-single__add-to-cart">
@@ -430,7 +439,8 @@
     
         </div> <!-- end row -->
       </div> <!-- end container -->
-    </section> <!-- end related products -->
+    </section> 
+    <!-- end related products -->
 
     <!-- Footer -->
     <%- include('includes/footer-nav.ejs') %>

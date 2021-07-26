@@ -490,7 +490,12 @@ exports.placeOrder = async (req, res, next) => {
   const paymentMode = req.body.payment_method;
   const cartProd = await Cart.findAll({
     where: { userId: req.session.userData.id },
-    include: Product,
+    include: [
+      {
+        model: Product,
+        include: Seller,
+      },
+    ],
   });
   let cartSubTotal = 0;
   cartProd.forEach((cartItem) => {
@@ -500,10 +505,11 @@ exports.placeOrder = async (req, res, next) => {
   if (cartSubTotal < 999) {
     shipping = 99;
   }
-  let cartTotal = cartSubTotal + shipping;
+  // let cartTotal = cartSubTotal + shipping;
   const order = await Orders.create({
     orderNo: "ORD-" + orderid.generate(),
-    orderValue: cartTotal,
+    orderValue: cartSubTotal,
+    shippingValue: shipping,
     userId: req.session.userData.id,
     userAddressId: addressId,
     paymentMode: paymentMode,
@@ -513,8 +519,16 @@ exports.placeOrder = async (req, res, next) => {
       await OrderList.create({
         quantity: cartItem.quantity,
         orderId: order.id,
-        productId: cartItem.product.id,
+        productName: cartItem.product.title,
+        productMRP: cartItem.product.mrp,
+        productSalePrice: cartItem.product.salePrice,
+        sellerName: cartItem.product.seller.name,
+        sellerEmail: cartItem.product.seller.email,
+        sellerMobile: cartItem.product.seller.mobile,
       });
+      const prod = await Product.findByPk(cartItem.product.id);
+      prod.stock = prod.stock - cartItem.quantity;
+      await prod.save();
     }
     await Cart.destroy({ where: { userId: req.session.userData.id } });
     res.redirect("/");
@@ -522,8 +536,9 @@ exports.placeOrder = async (req, res, next) => {
 };
 
 exports.userOrders = async (req, res, next) => {
-  const orderDetails = await Orders.findAll({where: {userId: req.session.userData.id},
-    include: [{ model: OrderList, include: Product }],
+  const orderDetails = await Orders.findAll({
+    where: { userId: req.session.userData.id },
+    include: OrderList,
   });
   // console.log(orderDetails[0].orderLists);
 
@@ -536,6 +551,6 @@ exports.userOrders = async (req, res, next) => {
     pageTitle: "Fly-Zone | Orders",
     cartCount: cartCount,
     menuList: cat,
-    orderDetails: orderDetails
+    orderDetails: orderDetails,
   });
 };
