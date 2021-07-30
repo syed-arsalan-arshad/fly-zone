@@ -466,10 +466,11 @@ exports.postAddLabels = async (req, res, next) => {
 exports.orderList = async (req, res, next) => {
   // const orderDetails = await OrderList.findAll({include: [{model: Product, where: {sellerId: req.session.sellerData.id}}, Orders],
   // });
-  const orderDetails = await OrderList.findAll({where: {sellerMobile: req.session.sellerData.mobile}});
+  const orderDetails = await OrderList.findAll({where: {sellerMobile: req.session.sellerData.mobile}, include: Orders});
   console.log(orderDetails);
   res.render('seller/order-list',{
     path: "",
     sidePath: "/order-list",
+    orderList: orderDetails
   })
 };

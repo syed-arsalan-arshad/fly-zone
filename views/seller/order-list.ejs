@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>S.No</th>
@@ -21,14 +21,25 @@
                             <th>Product Name</th>
                             <th>Sale Price</th>
                             <th>Quantity</th>
+                            <th>Total</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            
-                        </tr>
+                        <% i = 1; orderList.forEach(order => { %> 
+                            <tr>
+                                <td><%= i %></td>
+                                <td><%= order.order.orderNo %></td>
+                                <td><%= order.productName %></td>
+                                <td><%= order.productSalePrice %></td>
+                                <td><%= order.quantity %></td>
+                                <td><%= order.productSalePrice * order.quantity %></td>
+                                <td>1</td>
+                                <td><button>Shipped</button></td>
+                            </tr>
+                        <% i++; }) %>
+                        
                     </tbody>
                 </table>
             </div>

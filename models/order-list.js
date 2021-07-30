@@ -11,6 +11,10 @@ const OrderList = sequelize.define("orderLists", {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
+  status: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
   productName: Sequelize.STRING,
   productMRP: Sequelize.INTEGER,
   productSalePrice: Sequelize.INTEGER,
