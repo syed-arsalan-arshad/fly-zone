@@ -27,7 +27,35 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% i = 1; orderList.forEach(order => { %> 
+                        <% i = 1; orderList.forEach(order => { 
+                            
+                            btn = '';
+                            if(order.status == 1){
+                                btn = 'Ordered';
+                            }else if(order.status == 2){
+                                btn = 'Processing';
+                            }else if(order.status == 3){
+                                btn = 'Shipped';
+                            }else if(order.status == 4){
+                                btn = 'Delivered';
+                            }
+
+                            status = '';
+                            statusValue = null;
+                            if(order.status == 1){
+                                status = 'Processing';
+                                statusValue = 2;
+                            }else if(order.status == 2){
+                                status = 'Shipped';
+                                statusValue = 3;
+                            }else if(order.status == 3){
+                                status = 'Delivered';
+                                statusValue = 4;
+                            }else{
+                                status = 'No Action Needed';
+                            }
+                            
+                            %> 
                             <tr>
                                 <td><%= i %></td>
                                 <td><%= order.order.orderNo %></td>
@@ -35,8 +63,14 @@
                                 <td><%= order.productSalePrice %></td>
                                 <td><%= order.quantity %></td>
                                 <td><%= order.productSalePrice * order.quantity %></td>
-                                <td>1</td>
-                                <td><button>Shipped</button></td>
+                                <td><button class="btn btn-secondary"><%= btn %></button></td>
+                                <td>
+                                    <form action="/seller/change-order-status" method="POST">
+                                        <input type="hidden" value="<%= statusValue %>" name="updatedStatus">
+                                        <input type="hidden" value="<%= order.id %>" name="orderId">
+                                        <button type="submit" class="btn btn-info" <% if(order.status == 4){ %> disabled style="cursor: not-allowed;" <% } %> ><%= status %></button>
+                                    </form>
+                                </td>
                             </tr>
                         <% i++; }) %>
                         

@@ -5,8 +5,13 @@ const SubCategory = require("../models/sub-category");
 const Product = require("../models/product");
 const Label = require("../models/productLabel");
 const fs = require("fs");
+const path = require("path");
 const OrderList = require("../models/order-list");
 const Orders = require("../models/orders");
+
+var easyinvoice = require("easyinvoice");
+const UserAddress = require("../models/user-address");
+
 exports.getIndex = async (req, res, next) => {
   const productCount = await Product.findAndCountAll({
     where: { sellerId: req.session.sellerData.id },
@@ -455,9 +460,9 @@ exports.postAddLabels = async (req, res, next) => {
     await Label.create({
       label: label,
       value: value,
-      productId: product.id
+      productId: product.id,
     });
-    res.redirect('/seller/add-labels/'+proId);
+    res.redirect("/seller/add-labels/" + proId);
   } catch (err) {
     console.log(err);
   }
@@ -466,11 +471,130 @@ exports.postAddLabels = async (req, res, next) => {
 exports.orderList = async (req, res, next) => {
   // const orderDetails = await OrderList.findAll({include: [{model: Product, where: {sellerId: req.session.sellerData.id}}, Orders],
   // });
-  const orderDetails = await OrderList.findAll({where: {sellerMobile: req.session.sellerData.mobile}, include: Orders});
-  console.log(orderDetails);
-  res.render('seller/order-list',{
+  const orderDetails = await OrderList.findAll({
+    where: { sellerMobile: req.session.sellerData.mobile },
+    include: Orders,
+  });
+  // console.log(orderDetails);
+  res.render("seller/order-list", {
     path: "",
     sidePath: "/order-list",
-    orderList: orderDetails
-  })
+    orderList: orderDetails,
+  });
 };
+
+exports.changeOrderStatus = async (req, res, next) => {
+  const orderId = req.body.orderId;
+  const updatedStatus = req.body.updatedStatus;
+
+  try {
+    const order = await OrderList.update(
+      {
+        status: updatedStatus,
+      },
+      {
+        where: {
+          id: orderId,
+        },
+      }
+    );
+    if (order) {
+      if (updatedStatus == 4) {
+        const invoiceDetails = await OrderList.findByPk(orderId, {
+          include: [{ model: Orders, include: UserAddress }],
+        });
+        // console.log(invoiceDetails);
+        generateInvoice(invoiceDetails);
+      }
+      res.redirect("/seller/order-list");
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+async function generateInvoice(invoiceDetails) {
+  let imgPath = path.resolve("public/user/img", "flyzone_logo.png");
+  const invName = "INV_" + (new Date()).getTime();
+  const invoiceName = invName + ".pdf";
+  await OrderList.update({invoiceFileName: invoiceName},{where: {id: invoiceDetails.id}});
+  const invoicePath = path.join("user-invoice", invoiceName);
+  // console.log(imgPath);
+  const taxableValue = ((invoiceDetails.productSalePrice * 100) / 105).toFixed(2);
+  var data = {
+    //"documentTitle": "RECEIPT", //Defaults to INVOICE
+    //"locale": "de-DE", //Defaults to en-US, used for number formatting (see docs)
+    currency: "INR", //See documentation 'Locales and Currency' for more info
+    taxNotation: "GST", //or gst
+    marginTop: 25,
+    marginRight: 25,
+    marginLeft: 25,
+    marginBottom: 25,
+    logo: `${base64_encode(imgPath)}`, //or base64
+    // background: `${base64_encode(imgPath)}`, //or base64 //img or pdf
+    sender: {
+      company: invoiceDetails.sellerName,
+      address: "Urdu Bazar Lane",
+      zip: "812002",
+      city: "Bhagalpur",
+      country: "India",
+      "custom1": invoiceDetails.sellerEmail,
+      "custom2": invoiceDetails.sellerMobile,
+      //"custom3": "custom value 3"
+    },
+    client: {
+      company: invoiceDetails.order.userAddress.name,
+      address: invoiceDetails.order.userAddress.address,
+      zip: invoiceDetails.order.userAddress.pincode,
+      city: invoiceDetails.order.userAddress.district,
+      country: "India",
+      //"custom1": "custom value 1",
+      //"custom2": "custom value 2",
+      //"custom3": "custom value 3"
+    },
+    invoiceNumber: invName,
+    invoiceDate: getCurrentDate(),
+    products: [
+      {
+        quantity: invoiceDetails.quantity,
+        description: invoiceDetails.productName,
+        tax: 5,
+        price: taxableValue,
+      },
+    ],
+    bottomNotice: "Thank You For Shopping! Have A Good Day.",
+    //Used for translating the headers to your preferred language
+    //Defaults to English. Below example is translated to Dutch
+    // "translate": {
+    //     "invoiceNumber": "Factuurnummer",
+    //     "invoiceDate": "Factuurdatum",
+    //     "products": "Producten",
+    //     "quantity": "Aantal",
+    //     "price": "Prijs",
+    //     "subtotal": "Subtotaal",
+    //     "total": "Totaal"
+    // }
+  };
+
+  //Create your invoice! Easy!
+  const result = await easyinvoice.createInvoice(data);
+  await fs.writeFileSync(invoicePath, result.pdf, "base64");
+}
+
+function base64_encode(img) {
+  // read binary data
+  let png = fs.readFileSync(img);
+  // convert binary data to base64 encoded string
+  return new Buffer.from(png).toString("base64");
+}
+
+function getCurrentDate(){
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+  const dateObj = new Date();
+  const month = monthNames[dateObj.getMonth()];
+  const day = dateObj.getDate();
+  const year = dateObj.getFullYear();
+  const output = day + '/' + month + '/' + year;
+  return output;
+}

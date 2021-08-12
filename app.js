@@ -27,7 +27,6 @@ const { match } = require("assert");
 const Orders = require("./models/orders");
 const OrderList = require("./models/order-list");
 const { orderList } = require("./controllers/seller");
-const OrderStatus = require("./models/order-status");
 
 const store = new SessionStore({
   db: sequelize,
@@ -126,7 +125,6 @@ Orders.belongsTo(User, { constraint: true, onDelete: "CASCADE" });
 Orders.belongsTo(UserAddress, { constraint: true, onDelete: "CASCADE" });
 OrderList.belongsTo(Orders, { constraint: true, onDelete: "CASCADE" });
 Orders.hasMany(OrderList, { constraint: true, onDelete: "CASCADE" });
-OrderList.belongsTo(OrderStatus, { constraint: true, onDelete: "CASCADE" });
 //Instatiate Server
 sequelize
   // .sync({ force: true})

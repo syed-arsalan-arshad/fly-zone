@@ -74,7 +74,22 @@
                           </thead>
                           
                           <tbody>
-                            <% order.orderLists.forEach(orderList => { %> 
+                            <% order.orderLists.forEach(orderList => { 
+                              title = 'After Delivery Invoice Will Be Downloaded';
+                              btn = '';
+                              if(orderList.status == 1){
+                                  btn = 'Ordered';
+                              }else if(orderList.status == 2){
+                                  btn = 'Processing';
+                              }else if(orderList.status == 3){
+                                  btn = 'Shipped';
+                              }else if(orderList.status == 4){
+                                  btn = 'Delivered';
+                                  title = 'Get Your Invoice';
+                              }
+                              
+                              
+                              %> 
                               <tr class="cart_item">
                                 <!-- <td class="product-thumbnail">
                                   <a href="#">
@@ -102,10 +117,13 @@
                                   <span class="amount">&#8377;<%= (orderList.productSalePrice * orderList.quantity) %></span>
                                 </td>
                                 <td>
-                                  <span>1</span>
+                                  <span><%= btn %></span>
                                 </td>
                                 <td>
-                                  <a href="">Get Invoice</a>
+                                  <form action="/get-invoice" method="POST">
+                                    <input type="hidden" value="<%= orderList.invoiceFileName %>" name="invName">
+                                    <button title="<%= title %>" type="submit" class="btn btn-info" <% if(orderList.status != 4){ %> disabled style="cursor: not-allowed;" <% } %> >Get Invoice</button>
+                                </form>
                                 </td>
                               </tr> 
                             <% }) %>  

@@ -10,6 +10,8 @@ const UserAddress = require("../models/user-address");
 const Orders = require("../models/orders");
 const OrderList = require("../models/order-list");
 const orderid = require("order-id")("mysecret");
+const path = require('path');
+const fs = require('fs');
 
 exports.getLogin = (req, res, next) => {
   Category.findAll({ include: SubCategory })
@@ -525,6 +527,7 @@ exports.placeOrder = async (req, res, next) => {
         sellerName: cartItem.product.seller.name,
         sellerEmail: cartItem.product.seller.email,
         sellerMobile: cartItem.product.seller.mobile,
+        status: 1
       });
       const prod = await Product.findByPk(cartItem.product.id);
       prod.stock = prod.stock - cartItem.quantity;
@@ -553,4 +556,18 @@ exports.userOrders = async (req, res, next) => {
     menuList: cat,
     orderDetails: orderDetails,
   });
+};
+
+exports.getInvoice = (req, res, next) => {
+  const invName = req.body.invName;
+  const invoicePath = path.join('user-invoice', invName);
+  console.log(invoicePath);
+  fs.readFile(invoicePath, (err, data) => {
+      if(err){
+        console.log(err);
+      }
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'inline; filename='+ invName);
+      res.send(data);
+    });
 };

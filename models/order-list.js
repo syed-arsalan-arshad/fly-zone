@@ -21,5 +21,6 @@ const OrderList = sequelize.define("orderLists", {
   sellerName: Sequelize.STRING,
   sellerEmail: Sequelize.STRING,
   sellerMobile: Sequelize.STRING,
+  invoiceFileName: Sequelize.STRING
 });
 module.exports = OrderList;

@@ -139,4 +139,6 @@ router.post(
 
 router.get('/order-list', sellerController.orderList);
 
+router.post('/change-order-status', sellerController.changeOrderStatus);
+
 module.exports = router;

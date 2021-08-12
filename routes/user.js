@@ -74,4 +74,6 @@ router.get('/order-list', userController.userOrders);
 
 router.post('/place-order', userController.placeOrder);
 
+router.post('/get-invoice', userController.getInvoice);
+
 module.exports = router;
